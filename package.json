@@ -1,0 +1,43 @@
+{
+  "name": "graphql-client-react",
+  "version": "1.0.0",
+  "description": "A react/typescript Higher Order Component(HOC) for making GraphQL API calls.",
+  "main": "./graphql-client-react.js",
+  "types": "./graphql-client-react.d.ts",
+  "scripts": {
+    "start": "webpack-dev-server --mode development --config webpack.config.js",
+    "build": "webpack --mode production --config webpack.config.prod.js",
+    "lint": "tslint --project tsconfig.json 'src/**/*.+(ts|tsx)'",
+    "lint-fix": "tslint --fix --project tsconfig.json 'src/**/*.+(ts|tsx)'",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vladluca/graphql-client-react.git"
+  },
+  "author": "Luca Vlad-Marius",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vladluca/graphql-client-react/issues"
+  },
+  "homepage": "https://github.com/vladluca/graphql-client-react#readme",
+  "devDependencies": {
+    "@babel/core": "^7.3.4",
+    "@types/react": "^16.8.7",
+    "@types/react-dom": "^16.8.2",
+    "babel-loader": "^8.0.5",
+    "fork-ts-checker-webpack-plugin": "^1.0.0",
+    "html-webpack-plugin": "^3.2.0",
+    "react": "^16.8.4",
+    "react-dom": "^16.8.4",
+    "ts-loader": "^5.3.3",
+    "tslint": "^5.13.1",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-react": "^3.6.0",
+    "typescript": "^3.3.3333",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.2.3",
+    "webpack-dev-server": "^3.2.1"
+  },
+  "dependencies": {}
+}
