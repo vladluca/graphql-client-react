@@ -3,3 +3,7 @@
 
 # misc
 .idea/
+
+#library files
+graphql-client-react.js
+graphql-client-react.js.map

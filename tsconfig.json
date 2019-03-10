@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "lib": ["es2015", "dom"],
+    "target": "es5",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "jsx": "react",
+    "declaration": true,
+    "experimentalDecorators": true
+  },
+  "include": ["./src/**/*"],
+  "exclude": ["node_modules", "./src/components/App.tsx"]
+}

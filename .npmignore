@@ -1,0 +1,16 @@
+# dependencies
+/node_modules
+
+# production
+dist/
+src/
+
+# misc
+.idea/
+
+npm-debug.log*
+
+tsconfig.json
+tslint.json
+webpack.config.js
+webpack.config.prod.js
