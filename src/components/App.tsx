@@ -2,7 +2,11 @@ import React, { Component, ReactNode } from 'react';
 
 import { graphql } from './graphql';
 
-class App extends Component<{}, {}> {
+interface IAppProps {
+  randomProp: number
+}
+
+class App extends Component<IAppProps, {}> {
 
   public render(): ReactNode {
     console.log('App props: ', this.props);
@@ -14,4 +18,4 @@ class App extends Component<{}, {}> {
   }
 }
 
-export default graphql<{}>()(App);
+export default graphql<IAppProps>()(App);

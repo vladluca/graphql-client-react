@@ -18,7 +18,6 @@ module.exports = {
     'react-dom': 'react-dom'
   },
   resolve: {
-    // this needs to be in this order. don't ask.
     extensions: ['.ts', '.tsx', '.js'],
     alias: {
       'react': path.resolve(__dirname, './node_modules/react'),
