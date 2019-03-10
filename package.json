@@ -7,6 +7,9 @@
   "scripts": {
     "start": "webpack-dev-server --mode development --config webpack.config.js",
     "build": "webpack --mode production --config webpack.config.prod.js",
+    "prepare": "npm run build",
+    "prepack-build": "npm install",
+    "prepack": "npm run prepack-build",
     "lint": "tslint --project tsconfig.json 'src/**/*.+(ts|tsx)'",
     "lint-fix": "tslint --fix --project tsconfig.json 'src/**/*.+(ts|tsx)'",
     "test": "echo \"Error: no test specified\" && exit 1"

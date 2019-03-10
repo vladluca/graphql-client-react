@@ -3,7 +3,9 @@ import React, { ReactNode } from 'react';
 import { IGraphQLOptions } from './interfaces/IGraphQLOptions';
 import { IGraphQLInjectedProps } from './interfaces/IGraphQLInjectedProps';
 
-export function graphql<TProps>({ debug = false }: IGraphQLOptions = {}): (WrappedComponent: React.ComponentType<TProps>) => React.ComponentClass<TProps & IGraphQLInjectedProps> {
+export function graphql<TProps>({ debug = false }: IGraphQLOptions = {}): (
+  WrappedComponent: React.ComponentType<TProps>
+) => React.ComponentClass<TProps & IGraphQLInjectedProps> {
   return (
     WrappedComponent: React.ComponentType<TProps>,
   ): React.ComponentClass<TProps & IGraphQLInjectedProps> => {
@@ -14,5 +16,5 @@ export function graphql<TProps>({ debug = false }: IGraphQLOptions = {}): (Wrapp
         return <WrappedComponent text="Ana are mere" {...this.props} />;
       }
     };
-  }
+  };
 }
