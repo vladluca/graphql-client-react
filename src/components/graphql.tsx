@@ -1,14 +1,17 @@
 import React, { ComponentType, ComponentClass } from 'react';
 
-import { IGraphQLOptions } from './interfaces/IGraphQLOptions';
+import { IGraphqlOptions } from './interfaces/IGraphqlOptions';
 
 import { OperationType } from '../constants/operationType';
-import { query } from './query';
-import { IGraphQLInjectedProps } from './interfaces/IGraphQLInjectedProps';
+import { query } from './query/query';
+import { IGraphqlInjectedProps } from './interfaces/IGraphqlInjectedProps';
 
-export function graphql<TProps>(options: IGraphQLOptions): (
+/**
+ * @param options
+ */
+export function graphql<TProps>(options: IGraphqlOptions): (
   WrappedComponent: ComponentType<TProps>
-) => ComponentClass<TProps & IGraphQLInjectedProps> {
+) => ComponentClass<TProps & IGraphqlInjectedProps> {
   switch (options.operationType) {
     case OperationType.Query:
       return query<TProps>(options);
