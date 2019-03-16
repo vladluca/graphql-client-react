@@ -1,20 +1,19 @@
-import React, { ReactNode } from 'react';
+import React, { ComponentType, ComponentClass } from 'react';
 
 import { IGraphQLOptions } from './interfaces/IGraphQLOptions';
+
+import { OperationType } from '../constants/operationType';
+import { query } from './query';
 import { IGraphQLInjectedProps } from './interfaces/IGraphQLInjectedProps';
 
-export function graphql<TProps>({ debug = false }: IGraphQLOptions = {}): (
-  WrappedComponent: React.ComponentType<TProps>
-) => React.ComponentClass<TProps & IGraphQLInjectedProps> {
-  return (
-    WrappedComponent: React.ComponentType<TProps>,
-  ): React.ComponentClass<TProps & IGraphQLInjectedProps> => {
-    return class extends React.Component<TProps & IGraphQLInjectedProps> {
-      render(): ReactNode {
+export function graphql<TProps>(options: IGraphQLOptions): (
+  WrappedComponent: ComponentType<TProps>
+) => ComponentClass<TProps & IGraphQLInjectedProps> {
+  switch (options.operationType) {
+    case OperationType.Query:
+      return query<TProps>(options);
 
-        console.log('graphql HOC props: ', this.props, debug);
-        return <WrappedComponent text="Ana are mere" {...this.props} />;
-      }
-    };
-  };
+    default:
+      throw new Error('Invalid operation type provided');
+  }
 }

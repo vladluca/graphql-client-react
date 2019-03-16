@@ -1,9 +1,10 @@
 import React, { Component, ReactNode } from 'react';
 
 import { graphql } from './graphql';
+import { OperationType } from '../constants/operationType';
 
 interface IAppProps {
-  randomProp: number
+  randomProp: number;
 }
 
 class App extends Component<IAppProps, {}> {
@@ -18,4 +19,6 @@ class App extends Component<IAppProps, {}> {
   }
 }
 
-export default graphql<IAppProps>()(App);
+export default graphql<IAppProps>({
+  operationType: OperationType.Query
+})(App);
