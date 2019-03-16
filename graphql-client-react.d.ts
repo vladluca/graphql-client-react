@@ -13,7 +13,12 @@ declare function graphql<TProps>(options: IGraphqlOptions): (
 declare class GraphqlClientProvider extends Component<IGraphqlClientProviderProps> {}
 
 // http client config
-declare class HttpClientConfig {}
+declare class HttpClientConfig {
+  constructor(apiUrl: string);
+
+  public setApiUrl(apiUrl: string): HttpClientConfig;
+  public getApiUrl(): string;
+}
 
 // constants
 declare const OperationType: IOperationType;

@@ -19,7 +19,7 @@ export class HttpClientConfig {
    * @param apiUrl
    * @returns {HttpClientConfig}
    */
-  protected setApiUrl(apiUrl: string): HttpClientConfig {
+  public setApiUrl(apiUrl: string): HttpClientConfig {
     this.apiUrl = apiUrl;
 
     return this;
@@ -28,7 +28,7 @@ export class HttpClientConfig {
   /**
    * @returns {string}
    */
-  protected getApiUrl(): string {
+  public getApiUrl(): string {
     return this.apiUrl;
   }
 }
