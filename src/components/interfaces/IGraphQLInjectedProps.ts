@@ -1,3 +1,3 @@
 export interface IGraphQLInjectedProps {
-  text?: string;
+  operationType?: string;
 }
