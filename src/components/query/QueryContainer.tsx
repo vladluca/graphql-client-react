@@ -7,6 +7,8 @@ import { IQueryContainerProps } from '../interfaces/IQueryContainerProps';
  */
 export default class QueryContainer extends Component<IQueryContainerProps> {
   render(): ReactNode {
+    console.log(this.props.client);
+
     return this.props.children({
       operationType: this.props.options.operationType
     });
