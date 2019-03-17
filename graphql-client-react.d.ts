@@ -1,11 +1,24 @@
-import { ComponentClass, ComponentType } from 'react'
+import { Component, ComponentClass, ComponentType } from 'react';
 
-import { IGraphQLOptions } from './src/components/interfaces/IGraphQLOptions';
-import { IGraphQLInjectedProps } from './src/components/interfaces/IGraphQLInjectedProps';
+import { IGraphqlOptions } from './src/components/interfaces/IGraphqlOptions';
+import { IGraphqlInjectedProps } from './src/components/interfaces/IGraphqlInjectedProps';
 import { IOperationType } from './src/components/interfaces/IOperationType';
+import { IGraphqlClientProviderProps } from './src/components/interfaces/IGraphqlClientProviderProps';
 
-declare function graphql<TProps>(options: IGraphQLOptions): (
+// react components
+declare function graphql<TProps>(options: IGraphqlOptions): (
   WrappedComponent: ComponentType<TProps>
-) => ComponentClass<TProps & IGraphQLInjectedProps>;
+) => ComponentClass<TProps & IGraphqlInjectedProps>;
 
+declare class GraphqlClientProvider extends Component<IGraphqlClientProviderProps> {}
+
+// http client config
+declare class HttpClientConfig {
+  constructor(apiUrl: string);
+
+  public setApiUrl(apiUrl: string): HttpClientConfig;
+  public getApiUrl(): string;
+}
+
+// constants
 declare const OperationType: IOperationType;
