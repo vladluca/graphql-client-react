@@ -11,5 +11,5 @@
     "experimentalDecorators": true
   },
   "include": ["./src/**/*"],
-  "exclude": ["node_modules", "./src/components/App.tsx"]
+  "exclude": ["node_modules"]
 }
