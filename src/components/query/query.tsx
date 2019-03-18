@@ -22,7 +22,11 @@ export function query<TProps>(options: IGraphqlOptions): (
         return (
           <GraphqlClientContext.Consumer>
             {(value: GraphqlClientContextValue) => (
-              <QueryContainer options={ options } client={value ? value.client : undefined} store={ value ? value.store : undefined }>
+              <QueryContainer
+                options={ options }
+                client={value ? value.client : undefined}
+                store={ value ? value.store : undefined }
+              >
                 {(queryResultProps: IGraphqlInjectedProps) => (
                   <WrappedComponent
                     { ...queryResultProps }

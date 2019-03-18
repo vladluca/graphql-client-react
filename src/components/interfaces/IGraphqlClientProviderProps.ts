@@ -6,6 +6,6 @@ import { IReduxState } from './IReduxState';
 
 export interface IGraphqlClientProviderProps {
   client: HttpClientConfig;
-  store: Store<IReduxState>
+  store: Store<IReduxState>;
   children: ReactNode;
 }

@@ -5,5 +5,5 @@ import { IReduxState } from './IReduxState';
 
 export interface IGraphqlClientContextValue {
   client: HttpClientConfig;
-  store: Store<IReduxState>
+  store: Store<IReduxState>;
 }
