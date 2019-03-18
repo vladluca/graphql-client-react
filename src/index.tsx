@@ -10,10 +10,11 @@ import store from './store';
 const httpClientConfig: HttpClientConfig = new HttpClientConfig('http://www.example.com/api');
 
 ReactDOM.render(
-  <Provider store={store}>
-    <GraphqlClientProvider client={ httpClientConfig }>
+  //<Provider store={store}>
+    <GraphqlClientProvider client={ httpClientConfig } store={ store }>
       <App randomProp={12}/>
     </GraphqlClientProvider>
-  </Provider>,
+  //</Provider>
+  ,
   document.getElementById('root') as HTMLElement
 );
