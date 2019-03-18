@@ -9,4 +9,4 @@ export { HttpClientConfig } from './HttpClientConfig/HttpClientConfig';
 export { OperationType } from './constants/operationType';
 
 // reducers
-export { graphqlClientReducer } from './reducers';
+export { queryReducer } from './reducers/query';

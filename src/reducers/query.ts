@@ -7,7 +7,7 @@ const defaultState: IQueryState = {
   result: null
 };
 
-export default function queryReducer(state: IQueryState = defaultState, action: AnyAction): IQueryState {
+export function queryReducer(state: IQueryState = defaultState, action: AnyAction): IQueryState {
   switch (action.type) {
     case queryActions.SET_QUERY_RESULT: {
       return {

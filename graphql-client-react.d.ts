@@ -1,11 +1,11 @@
 import { Component, ComponentClass, ComponentType } from 'react';
-import { Reducer } from 'redux';
+import { AnyAction, Reducer } from 'redux';
 
 import { IGraphqlOptions } from './src/components/interfaces/IGraphqlOptions';
 import { IGraphqlInjectedProps } from './src/components/interfaces/IGraphqlInjectedProps';
 import { IOperationType } from './src/components/interfaces/IOperationType';
 import { IGraphqlClientProviderProps } from './src/components/interfaces/IGraphqlClientProviderProps';
-import { IReduxState } from './src/components/interfaces/IReduxState';
+import { IQueryState } from './src/components/interfaces/IQueryState';
 
 // react components
 declare function graphql<TProps>(options: IGraphqlOptions): (
@@ -26,4 +26,4 @@ declare class HttpClientConfig {
 declare const OperationType: IOperationType;
 
 //reducers
-declare const graphqlClientReducer: Reducer<IReduxState>;
+declare function queryReducer(state: IQueryState, action: AnyAction): IQueryState;
