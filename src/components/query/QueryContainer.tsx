@@ -30,6 +30,7 @@ class QueryContainer extends Component<QueryContainerProps> {
 }
 
 function mapStateToProps(state: IReduxState): IQueryContainerReduxStateProps {
+  console.log(state);
   return {
     queryResult: state.queryReducer.result
   };
