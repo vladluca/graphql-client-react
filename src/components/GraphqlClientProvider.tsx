@@ -14,7 +14,8 @@ export class GraphqlClientProvider extends Component<IGraphqlClientProviderProps
    */
   public getContextValue(): IGraphqlClientContextValue {
     return {
-      client: this.props.client
+      client: this.props.client,
+      store: this.props.store
     };
   }
 
