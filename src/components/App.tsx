@@ -2,10 +2,8 @@ import React, { Component, ReactNode } from 'react';
 
 import { graphql } from './graphql';
 import { OperationTypes } from '../constants/operationTypes';
-import { ACCOUNT_LIVE_HOURS_QUERY, ACCOUNT_PROFILE_PICTURE_QUERY, ALL_USERS_QUERY } from '../graphql/testQueries';
+import { ALL_USERS_QUERY, GET_USER_QUERY } from '../graphql/testQueries';
 import { gqlParser } from '../utils/gqlParser';
-import { MEMBER_SIGN_UP_MUTATION } from '../graphql/testMutations';
-import { ACCOUNT_PROFILE_PICTURE } from '../graphql/testFragments';
 
 interface IAppProps {
   randomProp: number;
@@ -23,5 +21,9 @@ class App extends Component<IAppProps, {}> {
 }
 
 export default graphql<IAppProps>({
-  operation: ALL_USERS_QUERY
+  operation: GET_USER_QUERY,
+  variables: {
+    email: 'test@test12',
+    id: 'cjscwhcvg0bgn0167607t7p0b'
+  }
 })(App);

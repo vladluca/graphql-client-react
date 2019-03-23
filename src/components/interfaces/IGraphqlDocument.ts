@@ -1,9 +1,9 @@
 import { OperationTypes } from '../../constants/operationTypes';
-import { VariableDefinitionNode } from 'graphql';
+import { IOperationVariables } from './IOperationVariables';
 
 export interface IGraphqlDocument {
   type: OperationTypes;
   name: string;
-  variables: ReadonlyArray<VariableDefinitionNode>;
+  variables: ReadonlyArray<IOperationVariables>;
   body: string;
 }

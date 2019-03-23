@@ -8,6 +8,7 @@ import { IQueryContainerReduxStateProps } from '../interfaces/IQueryContainerRed
 import { IQueryContainerReduxDispatchProps } from '../interfaces/IQueryContainerReduxDispatchProps';
 
 import { setQueryResult } from '../../actions/query';
+import { variablesChecker } from '../../utils/variablesChecker';
 
 type QueryContainerProps = IQueryContainerProps & IQueryContainerReduxStateProps & IQueryContainerReduxDispatchProps;
 
@@ -17,10 +18,21 @@ type QueryContainerProps = IQueryContainerProps & IQueryContainerReduxStateProps
 class QueryContainer extends Component<QueryContainerProps> {
 
   componentDidMount(): void {
-    const { client, graphqlDocument } = this.props;
+    const { client, graphqlDocument, options: { variables } } = this.props;
 
     if (client) {
-      client.post({ query: this.props.graphqlDocument.body }).then((response: any) => {
+      if (variables) {
+        try {
+          variablesChecker(graphqlDocument.variables, variables);
+        } catch (e) {
+          throw e;
+        }
+      }
+
+      client.post({
+        query: this.props.graphqlDocument.body,
+        variables
+      }).then((response: any) => {
         console.log('RESPONSE: ', response);
       }).catch((e: Error) => {
         console.error(e);

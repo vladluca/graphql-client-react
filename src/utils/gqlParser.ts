@@ -7,6 +7,8 @@ import {
 
 import { OperationTypes } from '../constants/operationTypes';
 import { IGraphqlDocument } from '../components/interfaces/IGraphqlDocument';
+import { IOperationVariables } from '../components/interfaces/IOperationVariables';
+import { variablesParser } from './variablesParser';
 
 const cache: Map<DocumentNode, IGraphqlDocument> = new Map();
 
@@ -71,7 +73,9 @@ export function gqlParser(document: DocumentNode): IGraphqlDocument {
     name = 'data';
   }
 
-  const payload: IGraphqlDocument = { name, type, variables, body };
+  const parsedVariables: ReadonlyArray<IOperationVariables> = variablesParser(variables);
+
+  const payload: IGraphqlDocument = { name, type, variables: parsedVariables, body };
   cache.set(document, payload);
 
   return payload;
