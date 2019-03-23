@@ -7,3 +7,6 @@ export { HttpClientConfig } from './HttpClientConfig/HttpClientConfig';
 
 // constants
 export { OperationType } from './constants/operationType';
+
+// reducers
+export { queryReducer } from './reducers/query';
