@@ -6,13 +6,13 @@ import {
 } from 'graphql';
 
 import { OperationTypes } from '../constants/operationTypes';
-import { IDocumentDefinition } from '../components/interfaces/IDocumentDefinition';
+import { IGraphqlDocument } from '../components/interfaces/IGraphqlDocument';
 
-const cache: Map<DocumentNode, IDocumentDefinition> = new Map();
+const cache: Map<DocumentNode, IGraphqlDocument> = new Map();
 
 // the parser is mainly a safety check for the HOC
-export function gqlParser(document: DocumentNode): IDocumentDefinition {
-  const cached: IDocumentDefinition | undefined = cache.get(document);
+export function gqlParser(document: DocumentNode): IGraphqlDocument {
+  const cached: IGraphqlDocument | undefined = cache.get(document);
 
   if (cached) {
     return cached;
@@ -71,7 +71,7 @@ export function gqlParser(document: DocumentNode): IDocumentDefinition {
     name = 'data';
   }
 
-  const payload: IDocumentDefinition = { name, type, variables, body };
+  const payload: IGraphqlDocument = { name, type, variables, body };
   cache.set(document, payload);
 
   return payload;

@@ -1,6 +1,6 @@
-import { OperationTypes } from '../../constants/operationTypes';
+import { DocumentNode } from 'graphql';
 
 export interface IGraphqlOptions {
-  operationType: OperationTypes;
+  operation: DocumentNode;
   debug?: boolean;
 }

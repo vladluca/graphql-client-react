@@ -14,8 +14,8 @@ interface IAppProps {
 class App extends Component<IAppProps, {}> {
 
   public render(): ReactNode {
-    console.log('-----', gqlParser(MEMBER_SIGN_UP_MUTATION));
-    console.log('-----', MEMBER_SIGN_UP_MUTATION);
+    console.log('-----', gqlParser(ACCOUNT_LIVE_HOURS_QUERY));
+    console.log('-----', ACCOUNT_LIVE_HOURS_QUERY);
     console.log('App props: ', this.props);
     return (
       <div>
@@ -26,5 +26,5 @@ class App extends Component<IAppProps, {}> {
 }
 
 export default graphql<IAppProps>({
-  operationType: OperationTypes.Query
+  operation: ACCOUNT_LIVE_HOURS_QUERY
 })(App);

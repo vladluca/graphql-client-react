@@ -17,14 +17,14 @@ type QueryContainerProps = IQueryContainerProps & IQueryContainerReduxStateProps
 class QueryContainer extends Component<QueryContainerProps> {
 
   componentDidMount(): void {
-    this.props.setQueryResult(this.props.options.operationType);
+    this.props.setQueryResult(this.props.options.operation);
   }
 
   render(): ReactNode {
     console.log('QueryContainer props: ', this.props);
 
     return this.props.children({
-      operationType: this.props.options.operationType
+      operation: this.props.options.operation
     });
   }
 }

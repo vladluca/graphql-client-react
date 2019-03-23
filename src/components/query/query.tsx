@@ -4,11 +4,12 @@ import { IGraphqlOptions } from '../interfaces/IGraphqlOptions';
 import { IGraphqlInjectedProps } from '../interfaces/IGraphqlInjectedProps';
 import QueryContainer from './QueryContainer';
 import { GraphqlClientContext, GraphqlClientContextValue } from '../../context/GraphqlClientContext';
+import { IGraphqlDocument } from '../interfaces/IGraphqlDocument';
 
 /**
  * @param options
  */
-export function query<TProps>(options: IGraphqlOptions): (
+export function query<TProps>(options: IGraphqlOptions, graphqlDocument: IGraphqlDocument): (
   WrappedComponent: React.ComponentType<TProps>
 ) => React.ComponentClass<TProps & IGraphqlInjectedProps> {
   return (
@@ -19,6 +20,7 @@ export function query<TProps>(options: IGraphqlOptions): (
 
         console.log('graphql HOC props: ', this.props);
         console.log('graphql HOC options: ', options);
+        console.log('graphqlDocument: ', graphqlDocument);
         return (
           <GraphqlClientContext.Consumer>
             {(value: GraphqlClientContextValue) => (

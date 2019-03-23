@@ -1,5 +1,5 @@
-import { OperationTypes } from '../../constants/operationTypes';
+import { DocumentNode } from 'graphql';
 
 export interface IGraphqlInjectedProps {
-  operationType?: OperationTypes;
+  operation?: DocumentNode;
 }
