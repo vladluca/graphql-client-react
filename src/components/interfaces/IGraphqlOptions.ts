@@ -1,4 +1,6 @@
+import { OperationTypes } from '../../constants/operationTypes';
+
 export interface IGraphqlOptions {
-  operationType: string;
+  operationType: OperationTypes;
   debug?: boolean;
 }

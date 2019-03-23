@@ -1,7 +1,11 @@
 import React, { Component, ReactNode } from 'react';
 
 import { graphql } from './graphql';
-import { OperationType } from '../constants/operationType';
+import { OperationTypes } from '../constants/operationTypes';
+import { ACCOUNT_LIVE_HOURS_QUERY, ACCOUNT_PROFILE_PICTURE_QUERY } from '../graphql/testQueries';
+import { gqlParser } from '../utils/gqlParser';
+import { MEMBER_SIGN_UP_MUTATION } from '../graphql/testMutations';
+import { ACCOUNT_PROFILE_PICTURE } from '../graphql/testFragments';
 
 interface IAppProps {
   randomProp: number;
@@ -10,6 +14,8 @@ interface IAppProps {
 class App extends Component<IAppProps, {}> {
 
   public render(): ReactNode {
+    console.log('-----', gqlParser(MEMBER_SIGN_UP_MUTATION));
+    console.log('-----', MEMBER_SIGN_UP_MUTATION);
     console.log('App props: ', this.props);
     return (
       <div>
@@ -20,5 +26,5 @@ class App extends Component<IAppProps, {}> {
 }
 
 export default graphql<IAppProps>({
-  operationType: OperationType.Query
+  operationType: OperationTypes.Query
 })(App);

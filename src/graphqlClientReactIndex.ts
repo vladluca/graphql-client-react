@@ -6,7 +6,7 @@ export { GraphqlClientProvider } from './components/GraphqlClientProvider';
 export { HttpClientConfig } from './HttpClientConfig/HttpClientConfig';
 
 // constants
-export { OperationType } from './constants/operationType';
+export { OperationTypes } from './constants/operationTypes';
 
 // reducers
 export { queryReducer } from './reducers/query';
