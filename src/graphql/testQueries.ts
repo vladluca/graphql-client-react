@@ -24,3 +24,12 @@ export const ACCOUNT_PROFILE_PICTURE_QUERY: DocumentNode = gql`
     }
     ${ACCOUNT_PROFILE_PICTURE}
 `;
+
+export const ALL_USERS_QUERY: DocumentNode = gql`
+    query allUsersQuery{
+        allUsers {
+            id
+            name
+        }
+    }
+`;

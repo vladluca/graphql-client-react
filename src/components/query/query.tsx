@@ -28,6 +28,7 @@ export function query<TProps>(options: IGraphqlOptions, graphqlDocument: IGraphq
                 options={ options }
                 client={value ? value.client : undefined}
                 store={ value ? value.store : undefined }
+                graphqlDocument={ graphqlDocument }
               >
                 {(queryResultProps: IGraphqlInjectedProps) => (
                   <WrappedComponent

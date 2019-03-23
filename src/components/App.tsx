@@ -2,7 +2,7 @@ import React, { Component, ReactNode } from 'react';
 
 import { graphql } from './graphql';
 import { OperationTypes } from '../constants/operationTypes';
-import { ACCOUNT_LIVE_HOURS_QUERY, ACCOUNT_PROFILE_PICTURE_QUERY } from '../graphql/testQueries';
+import { ACCOUNT_LIVE_HOURS_QUERY, ACCOUNT_PROFILE_PICTURE_QUERY, ALL_USERS_QUERY } from '../graphql/testQueries';
 import { gqlParser } from '../utils/gqlParser';
 import { MEMBER_SIGN_UP_MUTATION } from '../graphql/testMutations';
 import { ACCOUNT_PROFILE_PICTURE } from '../graphql/testFragments';
@@ -26,5 +26,5 @@ class App extends Component<IAppProps, {}> {
 }
 
 export default graphql<IAppProps>({
-  operation: ACCOUNT_LIVE_HOURS_QUERY
+  operation: ALL_USERS_QUERY
 })(App);

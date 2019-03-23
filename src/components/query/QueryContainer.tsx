@@ -17,6 +17,17 @@ type QueryContainerProps = IQueryContainerProps & IQueryContainerReduxStateProps
 class QueryContainer extends Component<QueryContainerProps> {
 
   componentDidMount(): void {
+    const { client, graphqlDocument } = this.props;
+    console.log('xxxxxxx', this.props.graphqlDocument.body);
+
+    if (client) {
+      client.post({ query: this.props.graphqlDocument.body }).then((response: any) => {
+        console.log('RESPONSE: ', response);
+      }).catch((e) => {
+        console.error(e);
+      });
+    }
+
     this.props.setQueryResult(this.props.options.operation);
   }
 
