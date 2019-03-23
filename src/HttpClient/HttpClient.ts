@@ -9,11 +9,10 @@ export default class HttpClient {
   constructor(httpClientConfig: HttpClientConfig) {
     this.axiosInstance = axios.create({
       baseURL: httpClientConfig.getApiUrl()
-    })
+    });
   }
 
   public post(data: any): AxiosPromise {
-    console.log(data);
     return this.axiosInstance.post('', data);
   }
 }

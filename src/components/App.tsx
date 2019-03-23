@@ -14,9 +14,6 @@ interface IAppProps {
 class App extends Component<IAppProps, {}> {
 
   public render(): ReactNode {
-    console.log('-----', gqlParser(ACCOUNT_LIVE_HOURS_QUERY));
-    console.log('-----', ACCOUNT_LIVE_HOURS_QUERY);
-    console.log('App props: ', this.props);
     return (
       <div>
         Up & Running!

@@ -18,12 +18,11 @@ class QueryContainer extends Component<QueryContainerProps> {
 
   componentDidMount(): void {
     const { client, graphqlDocument } = this.props;
-    console.log('xxxxxxx', this.props.graphqlDocument.body);
 
     if (client) {
       client.post({ query: this.props.graphqlDocument.body }).then((response: any) => {
         console.log('RESPONSE: ', response);
-      }).catch((e) => {
+      }).catch((e: Error) => {
         console.error(e);
       });
     }
@@ -32,8 +31,6 @@ class QueryContainer extends Component<QueryContainerProps> {
   }
 
   render(): ReactNode {
-    console.log('QueryContainer props: ', this.props);
-
     return this.props.children({
       operation: this.props.options.operation
     });
@@ -41,7 +38,6 @@ class QueryContainer extends Component<QueryContainerProps> {
 }
 
 function mapStateToProps(state: IReduxState): IQueryContainerReduxStateProps {
-  console.log(state);
   return {
     queryResult: state.queryReducer.result
   };

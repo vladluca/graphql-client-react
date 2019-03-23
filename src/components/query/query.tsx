@@ -17,10 +17,6 @@ export function query<TProps>(options: IGraphqlOptions, graphqlDocument: IGraphq
   ): React.ComponentClass<TProps & IGraphqlInjectedProps> => {
     return class extends React.Component<TProps & IGraphqlInjectedProps> {
       render(): ReactNode {
-
-        console.log('graphql HOC props: ', this.props);
-        console.log('graphql HOC options: ', options);
-        console.log('graphqlDocument: ', graphqlDocument);
         return (
           <GraphqlClientContext.Consumer>
             {(value: GraphqlClientContextValue) => (
