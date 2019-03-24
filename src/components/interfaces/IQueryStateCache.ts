@@ -1,3 +1,3 @@
 export interface IQueryStateCache {
-  [queryKey: string]: any
+  [queryKey: string]: any;
 }

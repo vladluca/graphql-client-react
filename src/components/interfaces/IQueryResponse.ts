@@ -1,7 +1,7 @@
 export interface IQueryResponse {
-  queryKey: string,
+  queryKey: string;
   result: {
     data: any,
     errors?: any
-  }
+  };
 }

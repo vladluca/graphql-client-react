@@ -20,8 +20,8 @@ class QueryContainer extends Component<QueryContainerProps> {
 
   componentDidMount(): void {
     const { client, graphqlDocument, options: { variables } } = this.props;
-    const queryKey = graphqlDocument.name + JSON.stringify(variables);
-    console.log(queryKey);
+    const queryKey: string = graphqlDocument.name + JSON.stringify(variables);
+
     if (client) {
       if (variables) {
         try {
@@ -35,8 +35,6 @@ class QueryContainer extends Component<QueryContainerProps> {
         query: this.props.graphqlDocument.body,
         variables
       }).then((response: any) => {
-        console.log('==============', queryKey);
-
         this.props.setQueryResult({
           queryKey,
           result: response.data
@@ -51,7 +49,7 @@ class QueryContainer extends Component<QueryContainerProps> {
             }
           });
         } else {
-          throw error
+          throw error;
         }
       });
     }
@@ -59,11 +57,8 @@ class QueryContainer extends Component<QueryContainerProps> {
 
   render(): ReactNode {
     const { graphqlDocument, options: { variables } } = this.props;
-    const queryKey = graphqlDocument.name + JSON.stringify(variables);
-
+    const queryKey: string = graphqlDocument.name + JSON.stringify(variables);
     const queryResponse: any = {};
-
-    console.log('+++++++++++++++', this.props.queryResults);
 
     queryResponse[graphqlDocument.name] = this.props.queryResults[queryKey];
 
