@@ -1,3 +1,5 @@
+import { IQueryResponse } from './IQueryResponse';
+
 export interface IQueryContainerReduxDispatchProps {
-  setQueryResult: (result: any) => void;
+  setQueryResult: (queryData: IQueryResponse) => void;
 }

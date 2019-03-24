@@ -1,3 +1,5 @@
+import { IQueryStateCache } from './IQueryStateCache';
+
 export interface IQueryContainerReduxStateProps {
-  queryResult: string;
+  queryResults: IQueryStateCache;
 }

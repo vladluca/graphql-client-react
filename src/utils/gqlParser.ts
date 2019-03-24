@@ -70,7 +70,9 @@ export function gqlParser(document: DocumentNode): IGraphqlDocument {
   if (definition.name && definition.name.kind === 'Name') {
     name = definition.name.value;
   } else {
-    name = 'data';
+    throw new Error(
+      'You must give your query/mutation a name, in order for graphql to be able to cache it.'
+    );
   }
 
   const parsedVariables: ReadonlyArray<IOperationVariables> = variablesParser(variables);

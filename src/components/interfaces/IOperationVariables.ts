@@ -1,4 +1,4 @@
 export interface IOperationVariables {
   required: boolean;
-  name: string
+  name: string;
 }

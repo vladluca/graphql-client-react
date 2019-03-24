@@ -12,6 +12,8 @@ interface IAppProps {
 class App extends Component<IAppProps, {}> {
 
   public render(): ReactNode {
+    console.log(this.props);
+
     return (
       <div>
         Up & Running!
@@ -23,7 +25,6 @@ class App extends Component<IAppProps, {}> {
 export default graphql<IAppProps>({
   operation: GET_USER_QUERY,
   variables: {
-    email: 'test@test12',
-    id: 'cjscwhcvg0bgn0167607t7p0b'
+    id: 'cjtmt2cag0025lw10howm9wus'
   }
 })(App);

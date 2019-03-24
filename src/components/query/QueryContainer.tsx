@@ -9,6 +9,7 @@ import { IQueryContainerReduxDispatchProps } from '../interfaces/IQueryContainer
 
 import { setQueryResult } from '../../actions/query';
 import { variablesChecker } from '../../utils/variablesChecker';
+import { AxiosError } from 'axios';
 
 type QueryContainerProps = IQueryContainerProps & IQueryContainerReduxStateProps & IQueryContainerReduxDispatchProps;
 
@@ -19,7 +20,8 @@ class QueryContainer extends Component<QueryContainerProps> {
 
   componentDidMount(): void {
     const { client, graphqlDocument, options: { variables } } = this.props;
-
+    const queryKey = graphqlDocument.name + JSON.stringify(variables);
+    console.log(queryKey);
     if (client) {
       if (variables) {
         try {
@@ -33,25 +35,45 @@ class QueryContainer extends Component<QueryContainerProps> {
         query: this.props.graphqlDocument.body,
         variables
       }).then((response: any) => {
-        console.log('RESPONSE: ', response);
-      }).catch((e: Error) => {
-        console.error(e);
+        console.log('==============', queryKey);
+
+        this.props.setQueryResult({
+          queryKey,
+          result: response.data
+        });
+      }).catch((error: AxiosError) => {
+        if (error.response) {
+          this.props.setQueryResult({
+            queryKey,
+            result: {
+              data: null,
+              errors: error.response.data
+            }
+          });
+        } else {
+          throw error
+        }
       });
     }
-
-    this.props.setQueryResult(this.props.options.operation);
   }
 
   render(): ReactNode {
-    return this.props.children({
-      operation: this.props.options.operation
-    });
+    const { graphqlDocument, options: { variables } } = this.props;
+    const queryKey = graphqlDocument.name + JSON.stringify(variables);
+
+    const queryResponse: any = {};
+
+    console.log('+++++++++++++++', this.props.queryResults);
+
+    queryResponse[graphqlDocument.name] = this.props.queryResults[queryKey];
+
+    return this.props.children(queryResponse);
   }
 }
 
 function mapStateToProps(state: IReduxState): IQueryContainerReduxStateProps {
   return {
-    queryResult: state.queryReducer.result
+    queryResults: state.queryReducer.results
   };
 }
 
