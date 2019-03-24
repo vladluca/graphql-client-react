@@ -23,9 +23,9 @@ class QueryContainer extends Component<QueryContainerProps> {
     const queryKey: string = graphqlDocument.name + JSON.stringify(variables);
 
     if (client) {
-      if (variables) {
+      if (graphqlDocument.variables) {
         try {
-          variablesChecker(graphqlDocument.variables, variables);
+          variablesChecker(graphqlDocument.variables, variables ? variables : {});
         } catch (e) {
           throw e;
         }
