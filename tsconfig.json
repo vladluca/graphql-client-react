@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "lib": ["es2015", "dom"],
+    "lib": ["es2015", "dom", "esnext.asynciterable"],
     "target": "es5",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,

@@ -1,7 +1,9 @@
 import React, { Component, ReactNode } from 'react';
 
 import { graphql } from './graphql';
-import { OperationType } from '../constants/operationType';
+import { OperationTypes } from '../constants/operationTypes';
+import { ALL_USERS_QUERY, GET_USER_QUERY } from '../graphql/testQueries';
+import { gqlParser } from '../utils/gqlParser';
 
 interface IAppProps {
   randomProp: number;
@@ -10,7 +12,8 @@ interface IAppProps {
 class App extends Component<IAppProps, {}> {
 
   public render(): ReactNode {
-    console.log('App props: ', this.props);
+    console.log(this.props);
+
     return (
       <div>
         Up & Running!
@@ -20,5 +23,8 @@ class App extends Component<IAppProps, {}> {
 }
 
 export default graphql<IAppProps>({
-  operationType: OperationType.Query
+  operation: GET_USER_QUERY,
+  variables: {
+    id: 'cjtmt2cag0025lw10howm9wus'
+  }
 })(App);

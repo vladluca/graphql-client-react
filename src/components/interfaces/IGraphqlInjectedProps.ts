@@ -1,3 +1,5 @@
+import { DocumentNode } from 'graphql';
+
 export interface IGraphqlInjectedProps {
-  operationType?: string;
+  [queryKey: string]: any;
 }

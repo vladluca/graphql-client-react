@@ -1,9 +1,11 @@
 import { queryActions } from '../constants/actionTypes';
 import { AnyAction } from 'redux';
 
-export function setQueryResult(result: any): AnyAction {
+import { IQueryResponse } from '../components/interfaces/IQueryResponse';
+
+export function setQueryResult(queryData: IQueryResponse): AnyAction {
   return {
     type: queryActions.SET_QUERY_RESULT,
-    payload: result
+    payload: queryData
   };
 }

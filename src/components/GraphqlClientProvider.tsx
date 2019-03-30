@@ -3,6 +3,7 @@ import React, { Component, ReactNode } from 'react';
 import { GraphqlClientContext } from '../context/GraphqlClientContext';
 import { IGraphqlClientProviderProps } from './interfaces/IGraphqlClientProviderProps';
 import { IGraphqlClientContextValue } from './interfaces/IGraphqlClientContextValue';
+import HttpClient from '../HttpClient/HttpClient';
 
 /**
  * GraphqlClientProvider
@@ -14,7 +15,7 @@ export class GraphqlClientProvider extends Component<IGraphqlClientProviderProps
    */
   public getContextValue(): IGraphqlClientContextValue {
     return {
-      client: this.props.client,
+      client: new HttpClient(this.props.client),
       store: this.props.store
     };
   }
