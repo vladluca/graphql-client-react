@@ -23,3 +23,12 @@ declare class HttpClientConfig {
 
 //reducers
 declare function queryReducer(state: IQueryState, action: AnyAction): IQueryState;
+
+//constants
+declare enum CachingTypes {
+  CacheFirst = 'CACHE_FIRST',
+  CacheAndNetwork = 'CACHE_AND_NETWORK',
+  NetworkOnly = 'NETWORK_ONLY',
+  CacheOnly = 'CACHE_ONLY',
+  NoCache = 'NO_CACHE'
+}
