@@ -1,5 +1,5 @@
 import { Component, ComponentClass, ComponentType } from 'react';
-import { AnyAction, Reducer } from 'redux';
+import { AnyAction } from 'redux';
 
 import { IGraphqlOptions } from './src/components/interfaces/IGraphqlOptions';
 import { IGraphqlInjectedProps } from './src/components/interfaces/IGraphqlInjectedProps';
@@ -21,10 +21,10 @@ declare class HttpClientConfig {
   public getApiUrl(): string;
 }
 
-//reducers
+// reducers
 declare function queryReducer(state: IQueryState, action: AnyAction): IQueryState;
 
-//constants
+// constants
 declare enum CachingTypes {
   CacheFirst = 'CACHE_FIRST',
   CacheAndNetwork = 'CACHE_AND_NETWORK',

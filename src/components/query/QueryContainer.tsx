@@ -36,7 +36,7 @@ class QueryContainer extends Component<QueryContainerProps, IQueryContainerState
 
     this.state = {
       noCacheQueryResult: null
-    }
+    };
   }
 
   componentDidMount(): void {
