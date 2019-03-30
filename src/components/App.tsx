@@ -54,7 +54,7 @@ class App extends Component<IAppProps, IAppState> {
 
 export default graphql<IAppProps>({
   operation: GET_USER_QUERY,
-  cachingType: CachingTypes.CacheAndNetwork,
+  cachingType: CachingTypes.NoCache,
   variables: {
     id: 'cjtmt2cag0025lw10howm9wus'
   }
