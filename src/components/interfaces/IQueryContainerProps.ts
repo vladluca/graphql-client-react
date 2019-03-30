@@ -2,13 +2,15 @@ import { ReactNode } from 'react';
 import { Store } from 'redux';
 
 import { IGraphqlOptions } from './IGraphqlOptions';
-import { HttpClientConfig } from '../../HttpClientConfig/HttpClientConfig';
 import { IGraphqlInjectedProps } from './IGraphqlInjectedProps';
 import { IReduxState } from './IReduxState';
+import HttpClient from '../../HttpClient/HttpClient';
+import { IGraphqlDocument } from './IGraphqlDocument';
 
 export interface IQueryContainerProps {
   options: IGraphqlOptions;
-  client: HttpClientConfig | undefined;
+  client: HttpClient | undefined;
   store: Store<IReduxState> | undefined;
+  graphqlDocument: IGraphqlDocument;
   children(props: IGraphqlInjectedProps): ReactNode;
 }

@@ -1,9 +1,9 @@
 import { Store } from 'redux';
 
-import { HttpClientConfig } from '../../HttpClientConfig/HttpClientConfig';
 import { IReduxState } from './IReduxState';
+import HttpClient from '../../HttpClient/HttpClient';
 
 export interface IGraphqlClientContextValue {
-  client: HttpClientConfig;
+  client: HttpClient;
   store: Store<IReduxState>;
 }

@@ -1,4 +1,6 @@
+import { DocumentNode } from 'graphql';
+
 export interface IGraphqlOptions {
-  operationType: string;
-  debug?: boolean;
+  operation: DocumentNode;
+  variables?: object;
 }

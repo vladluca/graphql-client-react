@@ -1,3 +1,5 @@
+import { IQueryStateCache } from './IQueryStateCache';
+
 export interface IQueryState {
-  result: any;
+  results: IQueryStateCache;
 }
