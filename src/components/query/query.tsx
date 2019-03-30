@@ -8,6 +8,7 @@ import { IGraphqlDocument } from '../interfaces/IGraphqlDocument';
 
 /**
  * @param options
+ * @param graphqlDocument
  */
 export function query<TProps>(options: IGraphqlOptions, graphqlDocument: IGraphqlDocument): (
   WrappedComponent: React.ComponentType<TProps>
