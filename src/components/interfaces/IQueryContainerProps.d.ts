@@ -1,11 +1,12 @@
 import { ReactNode } from 'react';
 import { Store } from 'redux';
 
+import HttpClient from '../../HttpClient/HttpClient';
+
 import { IGraphqlOptions } from './IGraphqlOptions';
 import { IGraphqlInjectedProps } from './IGraphqlInjectedProps';
-import { IReduxState } from './IReduxState';
-import HttpClient from '../../HttpClient/HttpClient';
 import { IGraphqlDocument } from './IGraphqlDocument';
+import { IReduxState } from './IReduxState';
 
 export interface IQueryContainerProps {
   options: IGraphqlOptions;

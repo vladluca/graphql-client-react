@@ -13,6 +13,7 @@ import { variablesChecker } from '../../utils/variablesChecker';
 import { AxiosError } from 'axios';
 import HttpClient from '../../HttpClient/HttpClient';
 import { CachingTypes } from '../../constants/cachingTypes';
+import { cachingTypeChecker } from '../../utils/cachingTypeChecker';
 
 type QueryContainerProps = IQueryContainerProps & IQueryContainerReduxStateProps & IQueryContainerReduxDispatchProps;
 
@@ -36,7 +37,7 @@ class QueryContainer extends Component<QueryContainerProps, IQueryContainerState
 
     this.state = {
       noCacheQueryResult: null
-    }
+    };
   }
 
   componentDidMount(): void {
@@ -55,6 +56,9 @@ class QueryContainer extends Component<QueryContainerProps, IQueryContainerState
       if (graphqlDocument.variables) {
         try {
           variablesChecker(graphqlDocument.variables, variables ? variables : {});
+          if (cachingType) {
+            cachingTypeChecker(cachingType);
+          }
         } catch (e) {
           throw e;
         }

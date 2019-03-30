@@ -8,5 +8,5 @@ export { HttpClientConfig } from './HttpClientConfig/HttpClientConfig';
 // reducers
 export { queryReducer } from './reducers/query';
 
-//constants
+// constants
 export { CachingTypes } from './constants/cachingTypes';
