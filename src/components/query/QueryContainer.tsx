@@ -6,6 +6,7 @@ import { IQueryContainerProps } from '../interfaces/IQueryContainerProps';
 import { IReduxState } from '../interfaces/IReduxState';
 import { IQueryContainerReduxStateProps } from '../interfaces/IQueryContainerReduxStateProps';
 import { IQueryContainerReduxDispatchProps } from '../interfaces/IQueryContainerReduxDispatchProps';
+import { IQueryContainerState } from '../interfaces/IQueryContainerState';
 
 import { setQueryResult } from '../../actions/query';
 import { variablesChecker } from '../../utils/variablesChecker';
@@ -18,14 +19,24 @@ type QueryContainerProps = IQueryContainerProps & IQueryContainerReduxStateProps
 /**
  * QueryContainer
  */
-class QueryContainer extends Component<QueryContainerProps> {
+class QueryContainer extends Component<QueryContainerProps, IQueryContainerState> {
 
+  /**
+   * fetchedFromServer: boolean
+   */
   private fetchedFromServer: boolean;
 
+  /**
+   * @param props
+   */
   constructor(props: QueryContainerProps) {
     super(props);
 
     this.fetchedFromServer = false;
+
+    this.state = {
+      noCacheQueryResult: null
+    }
   }
 
   componentDidMount(): void {
@@ -60,6 +71,14 @@ class QueryContainer extends Component<QueryContainerProps> {
           shouldFetchFromServer = true;
           break;
 
+        case CachingTypes.CacheOnly:
+          shouldFetchFromServer = false;
+          break;
+
+        case CachingTypes.NoCache:
+          shouldFetchFromServer = true;
+          break;
+
         case CachingTypes.CacheFirst:
         default:
           shouldFetchFromServer = !queryResults[queryKey];
@@ -68,33 +87,54 @@ class QueryContainer extends Component<QueryContainerProps> {
       }
 
       if (shouldFetchFromServer) {
-        this.fetchData(client, queryKey, variables);
+        this.fetchData(client, queryKey, variables, cachingType);
       }
     }
   }
 
-  public fetchData(client: HttpClient, queryKey: string, variables?: object): Promise<void> {
+  /**
+   * @param client
+   * @param queryKey
+   * @param variables
+   * @param cachingType
+   */
+  public fetchData(client: HttpClient, queryKey: string, variables?: object, cachingType?: CachingTypes): Promise<void> {
     return client.post({
       query: this.props.graphqlDocument.body,
       variables
     }).then((response: any) => {
       this.fetchedFromServer = true;
 
-      this.props.setQueryResult({
-        queryKey,
-        result: response.data
-      });
+      if (cachingType !== CachingTypes.NoCache) {
+        this.props.setQueryResult({
+          queryKey,
+          result: response.data
+        });
+      } else {
+        this.setState({
+          noCacheQueryResult: response.data
+        });
+      }
     }).catch((error: AxiosError) => {
       if (error.response) {
         this.fetchedFromServer = true;
 
-        this.props.setQueryResult({
-          queryKey,
-          result: {
-            data: null,
-            errors: error.response.data
-          }
-        });
+        if (cachingType !== CachingTypes.NoCache) {
+          this.props.setQueryResult({
+            queryKey,
+            result: {
+              data: null,
+              errors: error.response.data
+            }
+          });
+        } else {
+          this.setState({
+            noCacheQueryResult: {
+              data: null,
+              errors: error.response.data
+            }
+          });
+        }
       } else {
         throw error;
       }
@@ -102,6 +142,7 @@ class QueryContainer extends Component<QueryContainerProps> {
   }
 
   render(): ReactNode {
+    const { noCacheQueryResult } = this.state;
     const {
       graphqlDocument,
       options: {
@@ -114,8 +155,20 @@ class QueryContainer extends Component<QueryContainerProps> {
     const queryKey: string = graphqlDocument.name + (variables ? JSON.stringify(variables) : '');
     const queryResponse: any = {};
 
-    if (cachingType !== CachingTypes.NetworkOnly || (cachingType === CachingTypes.NetworkOnly && this.fetchedFromServer)) {
-      queryResponse[graphqlDocument.name] = queryResults[queryKey];
+    if ((
+        (cachingType !== CachingTypes.NetworkOnly) &&
+        (cachingType !== CachingTypes.NoCache)
+      ) || ((
+          (cachingType === CachingTypes.NetworkOnly) ||
+          (cachingType === CachingTypes.NoCache)
+        ) && this.fetchedFromServer
+      )
+    ) {
+      if (cachingType === CachingTypes.NoCache) {
+        queryResponse[graphqlDocument.name] = noCacheQueryResult;
+      } else {
+        queryResponse[graphqlDocument.name] = queryResults[queryKey];
+      }
     } else {
       queryResponse[graphqlDocument.name] = undefined;
     }
@@ -133,6 +186,9 @@ function mapStateToProps(state: IReduxState): IQueryContainerReduxStateProps {
   };
 }
 
+/**
+ * @param dispatch
+ */
 function mapDispatchToProps(dispatch: Dispatch): IQueryContainerReduxDispatchProps {
   return {
     setQueryResult: (result: any) => dispatch(setQueryResult(result))
