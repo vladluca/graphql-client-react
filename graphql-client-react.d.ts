@@ -1,10 +1,29 @@
-import { Component, ComponentClass, ComponentType } from 'react';
-import { AnyAction } from 'redux';
+import { Component, ComponentClass, ComponentType, ReactNode } from 'react';
+import { AnyAction, Store } from 'redux';
 
-import { IGraphqlOptions } from './src/components/interfaces/IGraphqlOptions';
-import { IGraphqlInjectedProps } from './src/components/interfaces/IGraphqlInjectedProps';
-import { IGraphqlClientProviderProps } from './src/components/interfaces/IGraphqlClientProviderProps';
 import { IQueryState } from './src/components/interfaces/IQueryState';
+import { DocumentNode } from 'graphql';
+import { IReduxState } from './src/components/interfaces/IReduxState';
+
+declare interface IGraphqlOptions {
+  operation: DocumentNode;
+  variables?: object;
+  cachingType?: CachingTypes;
+}
+
+declare interface IGraphqlInjectedProps {
+  [queryKey: string]: any;
+}
+
+export interface IReduxState {
+  queryReducer: IQueryState;
+}
+
+export interface IGraphqlClientProviderProps {
+  client: HttpClientConfig;
+  store: Store<IReduxState>;
+  children: ReactNode;
+}
 
 // react components
 declare function graphql<TProps>(options: IGraphqlOptions): (

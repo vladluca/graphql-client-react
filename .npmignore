@@ -5,12 +5,6 @@
 dist/
 src/
 
-#whitelist exported interfaces
-!src/components/interfaces/IGraphqlOptions.d.ts
-!src/components/interfaces/IGraphqlInjectedProps.d.ts
-!src/components/interfaces/IGraphqlClientProviderProps.d.ts
-!src/components/interfaces/IQueryState.d.ts
-
 # misc
 .idea/
 
