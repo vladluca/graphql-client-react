@@ -1,29 +1,60 @@
 import React, { Component, ReactNode } from 'react';
 
 import { graphql } from './graphql';
-import { OperationTypes } from '../constants/operationTypes';
-import { ALL_USERS_QUERY, GET_USER_QUERY } from '../graphql/testQueries';
-import { gqlParser } from '../utils/gqlParser';
+import { GET_USER_QUERY } from '../graphql/testQueries';
+
+import XComponent from './XComponent';
+import { CachingTypes } from '../constants/cachingTypes';
 
 interface IAppProps {
   randomProp: number;
 }
 
-class App extends Component<IAppProps, {}> {
+interface IAppState {
+  showXComponent: boolean;
+}
+
+class App extends Component<IAppProps, IAppState> {
+
+  constructor(props: IAppProps) {
+    super(props);
+
+    this.toogleXComponent = this.toogleXComponent.bind(this);
+
+    this.state = {
+      showXComponent: false
+    };
+  }
+
+  public toogleXComponent(): void {
+    this.setState((prevState: IAppState) => {
+      return {
+        showXComponent: !prevState.showXComponent
+      };
+    });
+  }
 
   public render(): ReactNode {
-    console.log(this.props);
+    const { showXComponent } = this.state;
+    console.log('App props: ', this.props);
 
     return (
-      <div>
-        Up & Running!
-      </div>
+      <>
+        <div> Up & Running! </div>
+        <button onClick={ this.toogleXComponent }> Toogle XComponent </button>
+        {
+          showXComponent && (
+            <XComponent/>
+          )
+        }
+      </>
     );
   }
 }
 
 export default graphql<IAppProps>({
   operation: GET_USER_QUERY,
+  cachingType: CachingTypes.NetworkOnly,
   variables: {
     id: 'cjtmt2cag0025lw10howm9wus'
   }

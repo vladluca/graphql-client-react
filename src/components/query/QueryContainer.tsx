@@ -10,6 +10,8 @@ import { IQueryContainerReduxDispatchProps } from '../interfaces/IQueryContainer
 import { setQueryResult } from '../../actions/query';
 import { variablesChecker } from '../../utils/variablesChecker';
 import { AxiosError } from 'axios';
+import HttpClient from '../../HttpClient/HttpClient';
+import { CachingTypes } from '../../constants/cachingTypes';
 
 type QueryContainerProps = IQueryContainerProps & IQueryContainerReduxStateProps & IQueryContainerReduxDispatchProps;
 
@@ -18,9 +20,25 @@ type QueryContainerProps = IQueryContainerProps & IQueryContainerReduxStateProps
  */
 class QueryContainer extends Component<QueryContainerProps> {
 
+  private fetchedFromServer: boolean;
+
+  constructor(props: QueryContainerProps) {
+    super(props);
+
+    this.fetchedFromServer = false;
+  }
+
   componentDidMount(): void {
-    const { client, graphqlDocument, options: { variables } } = this.props;
-    const queryKey: string = graphqlDocument.name + JSON.stringify(variables);
+    const {
+      client,
+      graphqlDocument,
+      options: {
+        variables,
+        cachingType
+      },
+      queryResults
+    } = this.props;
+    const queryKey: string = graphqlDocument.name + (variables ? JSON.stringify(variables) : '');
 
     if (client) {
       if (graphqlDocument.variables) {
@@ -31,37 +49,80 @@ class QueryContainer extends Component<QueryContainerProps> {
         }
       }
 
-      client.post({
-        query: this.props.graphqlDocument.body,
-        variables
-      }).then((response: any) => {
-        this.props.setQueryResult({
-          queryKey,
-          result: response.data
-        });
-      }).catch((error: AxiosError) => {
-        if (error.response) {
-          this.props.setQueryResult({
-            queryKey,
-            result: {
-              data: null,
-              errors: error.response.data
-            }
-          });
-        } else {
-          throw error;
-        }
-      });
+      let shouldFetchFromServer: boolean;
+
+      switch (cachingType) {
+        case CachingTypes.CacheAndNetwork:
+          shouldFetchFromServer = true;
+          break;
+
+        case CachingTypes.NetworkOnly:
+          shouldFetchFromServer = true;
+          break;
+
+        case CachingTypes.CacheFirst:
+        default:
+          shouldFetchFromServer = !queryResults[queryKey];
+          break;
+
+      }
+
+      if (shouldFetchFromServer) {
+        this.fetchData(client, queryKey, variables);
+      }
     }
   }
 
+  public fetchData(client: HttpClient, queryKey: string, variables?: object): Promise<void> {
+    return client.post({
+      query: this.props.graphqlDocument.body,
+      variables
+    }).then((response: any) => {
+      this.fetchedFromServer = true;
+
+      this.props.setQueryResult({
+        queryKey,
+        result: response.data
+      });
+    }).catch((error: AxiosError) => {
+      if (error.response) {
+        this.fetchedFromServer = true;
+
+        this.props.setQueryResult({
+          queryKey,
+          result: {
+            data: null,
+            errors: error.response.data
+          }
+        });
+      } else {
+        throw error;
+      }
+    });
+  }
+
   render(): ReactNode {
-    const { graphqlDocument, options: { variables } } = this.props;
-    const queryKey: string = graphqlDocument.name + JSON.stringify(variables);
+    const {
+      graphqlDocument,
+      options: {
+        variables,
+        cachingType
+      },
+      queryResults
+    } = this.props;
+
+    const queryKey: string = graphqlDocument.name + (variables ? JSON.stringify(variables) : '');
     const queryResponse: any = {};
 
-    queryResponse[graphqlDocument.name] = this.props.queryResults[queryKey];
+    if (cachingType !== CachingTypes.NetworkOnly || (cachingType === CachingTypes.NetworkOnly && this.fetchedFromServer)) {
+      queryResponse[graphqlDocument.name] = queryResults[queryKey];
+    } else {
+      queryResponse[graphqlDocument.name] = undefined;
+    }
 
+    console.log(queryResults);
+
+    console.log('asd');
     return this.props.children(queryResponse);
   }
 }
