@@ -4,15 +4,23 @@ import { AnyAction, Store } from 'redux';
 import { IQueryState } from './src/components/interfaces/IQueryState';
 import { DocumentNode } from 'graphql';
 import { IReduxState } from './src/components/interfaces/IReduxState';
+import { IGraphqlResponseData } from './src/components/interfaces/IGraphqlResponseData';
 
 declare interface IGraphqlOptions {
   operation: DocumentNode;
   variables?: object;
   cachingType?: CachingTypes;
+  executeOnMount?: boolean;
+}
+
+declare interface IGraphqlResponseData {
+  data: any;
+  fetchQuery: (newVariables?: object) => void;
+  error?: any;
 }
 
 declare interface IGraphqlInjectedProps {
-  [queryKey: string]: any;
+  [queryKey: string]: IGraphqlResponseData | any;
 }
 
 export interface IReduxState {

@@ -6,4 +6,5 @@ export interface IGraphqlOptions {
   operation: DocumentNode;
   variables?: object;
   cachingType?: CachingTypes;
+  executeOnMount?: boolean;
 }

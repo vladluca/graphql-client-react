@@ -1,5 +1,5 @@
-import { DocumentNode } from 'graphql';
+import { IGraphqlResponseData } from './IGraphqlResponseData';
 
 export interface IGraphqlInjectedProps {
-  [queryKey: string]: any;
+  [queryKey: string]: IGraphqlResponseData | any;
 }

@@ -33,6 +33,8 @@ class QueryContainer extends Component<QueryContainerProps, IQueryContainerState
   constructor(props: QueryContainerProps) {
     super(props);
 
+    this.fetchQuery = this.fetchQuery.bind(this);
+
     this.fetchedFromServer = false;
 
     this.state = {
@@ -40,7 +42,51 @@ class QueryContainer extends Component<QueryContainerProps, IQueryContainerState
     };
   }
 
+  componentWillMount(): void {
+    const { options: { executeOnMount, cachingType }} = this.props;
+
+    if (executeOnMount === false && typeof cachingType !== 'undefined') {
+      throw new Error('When executeOnMount is false, you can not specify a caching type');
+    }
+  }
+
   componentDidMount(): void {
+    const { options: { executeOnMount }} = this.props;
+
+    if (executeOnMount === true || typeof executeOnMount === 'undefined') {
+      this.executeQuery();
+    }
+  }
+
+  fetchQuery(newVariables?: object): Promise<any> {
+    const {
+      client,
+      graphqlDocument,
+      options: {
+        variables
+      }
+    } = this.props;
+
+    const currentVariables: object | undefined = newVariables ? newVariables : variables;
+    const queryKey: string = this.getQueryKey(currentVariables);
+
+    if (client) {
+      if (graphqlDocument.variables) {
+        try {
+          variablesChecker(graphqlDocument.variables, currentVariables ? currentVariables : {});
+        } catch (e) {
+          throw e;
+        }
+      }
+
+      // fetchQuery method will always use NetworkOnly as caching type
+      return this.fetchData(client, queryKey, currentVariables, CachingTypes.NetworkOnly);
+    } else {
+      throw new Error('No graphql client on context!');
+    }
+  }
+
+  public executeQuery(): void {
     const {
       client,
       graphqlDocument,
@@ -50,12 +96,13 @@ class QueryContainer extends Component<QueryContainerProps, IQueryContainerState
       },
       queryResults
     } = this.props;
-    const queryKey: string = graphqlDocument.name + (variables ? JSON.stringify(variables) : '');
+    const queryKey: string = this.getQueryKey(variables);
 
     if (client) {
       if (graphqlDocument.variables) {
         try {
           variablesChecker(graphqlDocument.variables, variables ? variables : {});
+
           if (cachingType) {
             cachingTypeChecker(cachingType);
           }
@@ -93,6 +140,8 @@ class QueryContainer extends Component<QueryContainerProps, IQueryContainerState
       if (shouldFetchFromServer) {
         this.fetchData(client, queryKey, variables, cachingType);
       }
+    } else {
+      throw new Error('No graphql client on context!');
     }
   }
 
@@ -102,7 +151,7 @@ class QueryContainer extends Component<QueryContainerProps, IQueryContainerState
    * @param variables
    * @param cachingType
    */
-  public fetchData(client: HttpClient, queryKey: string, variables?: object, cachingType?: CachingTypes): Promise<void> {
+  public fetchData(client: HttpClient, queryKey: string, variables?: object, cachingType?: CachingTypes): Promise<any> {
     return client.post({
       query: this.props.graphqlDocument.body,
       variables
@@ -119,6 +168,8 @@ class QueryContainer extends Component<QueryContainerProps, IQueryContainerState
           noCacheQueryResult: response.data
         });
       }
+
+      return response.data;
     }).catch((error: AxiosError) => {
       if (error.response) {
         this.fetchedFromServer = true;
@@ -127,22 +178,35 @@ class QueryContainer extends Component<QueryContainerProps, IQueryContainerState
           this.props.setQueryResult({
             queryKey,
             result: {
-              data: null,
+              data: undefined,
               errors: error.response.data
             }
           });
         } else {
           this.setState({
             noCacheQueryResult: {
-              data: null,
+              data: undefined,
               errors: error.response.data
             }
           });
         }
+
+        return {
+          data: undefined,
+          errors: error.response.data
+        };
       } else {
         throw error;
       }
     });
+  }
+
+  public getQueryKey(variables?: object): string {
+    const {
+      graphqlDocument
+    } = this.props;
+
+    return graphqlDocument.name + (variables ? JSON.stringify(variables) : '');
   }
 
   render(): ReactNode {
@@ -151,12 +215,13 @@ class QueryContainer extends Component<QueryContainerProps, IQueryContainerState
       graphqlDocument,
       options: {
         variables,
-        cachingType
+        cachingType,
+        executeOnMount
       },
       queryResults
     } = this.props;
 
-    const queryKey: string = graphqlDocument.name + (variables ? JSON.stringify(variables) : '');
+    const queryKey: string = this.getQueryKey(variables);
     const queryResponse: any = {};
 
     if ((
@@ -170,11 +235,14 @@ class QueryContainer extends Component<QueryContainerProps, IQueryContainerState
     ) {
       if (cachingType === CachingTypes.NoCache) {
         queryResponse[graphqlDocument.name] = noCacheQueryResult;
+        queryResponse[graphqlDocument.name].fetchQuery = this.fetchQuery;
       } else {
-        queryResponse[graphqlDocument.name] = queryResults[queryKey];
+        queryResponse[graphqlDocument.name] = queryResults[queryKey] ? queryResults[queryKey] : { data: undefined };
+        queryResponse[graphqlDocument.name].fetchQuery = this.fetchQuery;
       }
     } else {
-      queryResponse[graphqlDocument.name] = undefined;
+      queryResponse[graphqlDocument.name] = { data: undefined };
+      queryResponse[graphqlDocument.name].fetchQuery = this.fetchQuery;
     }
 
     console.log(queryResults);
