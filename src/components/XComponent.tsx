@@ -18,7 +18,7 @@ class XComponent extends Component<{}, {}> {
 
 export default graphql({
   operation: GET_USER_QUERY,
-  cachingType: CachingTypes.CacheOnly,
+  cachingType: CachingTypes.CacheFirst,
   variables: {
     id: 'cjtmt2cag0025lw10howm9wus'
   }

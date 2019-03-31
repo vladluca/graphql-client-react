@@ -5,6 +5,7 @@ import { GET_USER_QUERY } from '../graphql/testQueries';
 
 import XComponent from './XComponent';
 import { CachingTypes } from '../constants/cachingTypes';
+import { IGraphqlInjectedProps } from './interfaces/IGraphqlInjectedProps';
 
 interface IAppProps {
   randomProp: number;
@@ -14,16 +15,25 @@ interface IAppState {
   showXComponent: boolean;
 }
 
-class App extends Component<IAppProps, IAppState> {
+class App extends Component<IAppProps & IGraphqlInjectedProps, IAppState> {
 
-  constructor(props: IAppProps) {
+  constructor(props: IAppProps & IGraphqlInjectedProps) {
     super(props);
 
+    this.fetchAgain = this.fetchAgain.bind(this);
     this.toogleXComponent = this.toogleXComponent.bind(this);
 
     this.state = {
       showXComponent: false
     };
+  }
+
+  public fetchAgain(): void {
+    this.props.getUser.fetchQuery({
+      id: 'cjtmt2cag0025lw10howm9sss'
+    }).then((response: any) => {
+      console.log(response);
+    });
   }
 
   public toogleXComponent(): void {
@@ -41,6 +51,7 @@ class App extends Component<IAppProps, IAppState> {
     return (
       <>
         <div> Up & Running! </div>
+        <button onClick={ this.fetchAgain }> Fetch Again </button>
         <button onClick={ this.toogleXComponent }> Toogle XComponent </button>
         {
           showXComponent && (
@@ -54,7 +65,6 @@ class App extends Component<IAppProps, IAppState> {
 
 export default graphql<IAppProps>({
   operation: GET_USER_QUERY,
-  cachingType: CachingTypes.NoCache,
   variables: {
     id: 'cjtmt2cag0025lw10howm9wus'
   }
