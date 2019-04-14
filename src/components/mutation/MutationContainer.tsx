@@ -21,6 +21,9 @@ class MutationContainer extends Component<MutationContainerProps> {
     this.executeMutation = this.executeMutation.bind(this);
   }
 
+  /**
+   * @param variables
+   */
   public executeMutation(variables: object): Promise<any> {
     const {
       client,
@@ -43,6 +46,10 @@ class MutationContainer extends Component<MutationContainerProps> {
     }
   }
 
+  /**
+   * @param client
+   * @param variables
+   */
   public fetchData(client: HttpClient, variables?: object): Promise<any> {
     return client.post({
       query: this.props.graphqlDocument.body,
