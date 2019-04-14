@@ -6,6 +6,7 @@ import { GET_USER_QUERY } from '../graphql/testQueries';
 import XComponent from './XComponent';
 import { CachingTypes } from '../constants/cachingTypes';
 import { IGraphqlInjectedProps } from './interfaces/IGraphqlInjectedProps';
+import { UPDATE_USER_MUTATION } from '../graphql/testMutations';
 
 interface IAppProps {
   randomProp: number;
@@ -22,6 +23,7 @@ class App extends Component<IAppProps & IGraphqlInjectedProps, IAppState> {
 
     this.fetchAgain = this.fetchAgain.bind(this);
     this.toogleXComponent = this.toogleXComponent.bind(this);
+    this.executeMutation = this.executeMutation.bind(this);
 
     this.state = {
       showXComponent: false
@@ -44,6 +46,15 @@ class App extends Component<IAppProps & IGraphqlInjectedProps, IAppState> {
     });
   }
 
+  public executeMutation(): void {
+    this.props.updateUserMutation({
+      id: 'cjtmt2cag0025lw10howm9wus',
+      firstName: 'Vlad'
+    }).then((response: any) => {
+      console.log(response);
+    })
+  }
+
   public render(): ReactNode {
     const { showXComponent } = this.state;
     console.log('App props: ', this.props);
@@ -53,6 +64,7 @@ class App extends Component<IAppProps & IGraphqlInjectedProps, IAppState> {
         <div> Up & Running! </div>
         <button onClick={ this.fetchAgain }> Fetch Again </button>
         <button onClick={ this.toogleXComponent }> Toogle XComponent </button>
+        <button onClick={ this.executeMutation }> Execute Mutation </button>
         {
           showXComponent && (
             <XComponent/>
@@ -64,8 +76,10 @@ class App extends Component<IAppProps & IGraphqlInjectedProps, IAppState> {
 }
 
 export default graphql<IAppProps>({
+  operation: UPDATE_USER_MUTATION
+})(graphql<IAppProps>({
   operation: GET_USER_QUERY,
   variables: {
     id: 'cjtmt2cag0025lw10howm9wus'
   }
-})(App);
+})(App));

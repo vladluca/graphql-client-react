@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 
 import { IGraphqlOptions } from '../interfaces/IGraphqlOptions';
 import { IGraphqlInjectedProps } from '../interfaces/IGraphqlInjectedProps';
-import QueryContainer from './QueryContainer';
+import MutationContainer from './MutationContainer';
 import { GraphqlClientContext, GraphqlClientContextValue } from '../../context/GraphqlClientContext';
 import { IGraphqlDocument } from '../interfaces/IGraphqlDocument';
 
@@ -10,7 +10,7 @@ import { IGraphqlDocument } from '../interfaces/IGraphqlDocument';
  * @param options
  * @param graphqlDocument
  */
-export function query<TProps>(options: IGraphqlOptions, graphqlDocument: IGraphqlDocument): (
+export function mutation<TProps>(options: IGraphqlOptions, graphqlDocument: IGraphqlDocument): (
   WrappedComponent: React.ComponentType<TProps>
 ) => React.ComponentClass<TProps & IGraphqlInjectedProps> {
   return (
@@ -21,19 +21,18 @@ export function query<TProps>(options: IGraphqlOptions, graphqlDocument: IGraphq
         return (
           <GraphqlClientContext.Consumer>
             {(value: GraphqlClientContextValue) => (
-              <QueryContainer
+              <MutationContainer
                 options={ options }
                 client={ value ? value.client : undefined }
-                store={ value ? value.store : undefined }
                 graphqlDocument={ graphqlDocument }
               >
-                {(queryResultProps: IGraphqlInjectedProps) => (
+                {(mutationResultProps: IGraphqlInjectedProps) => (
                   <WrappedComponent
-                    { ...queryResultProps }
+                    { ...mutationResultProps }
                     { ...this.props }
                   />
                 )}
-              </QueryContainer>
+              </MutationContainer>
             ) }
           </GraphqlClientContext.Consumer>
         );

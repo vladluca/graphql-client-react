@@ -1,10 +1,12 @@
 import gql from 'graphql-tag';
 import { DocumentNode } from 'graphql';
 
-export const MEMBER_SIGN_UP_MUTATION: DocumentNode = gql`
-    mutation MemberSignUpMutation($accountInformation: MemberSignUpInput!) {
-        memberSignUp(
-            input: $accountInformation
-        )
+export const UPDATE_USER_MUTATION: DocumentNode = gql`
+    mutation updateUserMutation($id: ID!, $firstName: String!) {
+        updateUser(id: $id, firstName: $firstName) {
+            id
+            firstName
+            lastName
+        }
     }
 `;
