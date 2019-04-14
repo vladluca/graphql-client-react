@@ -52,7 +52,7 @@ class App extends Component<IAppProps & IGraphqlInjectedProps, IAppState> {
       firstName: 'Vlad'
     }).then((response: any) => {
       console.log(response);
-    })
+    });
   }
 
   public render(): ReactNode {
