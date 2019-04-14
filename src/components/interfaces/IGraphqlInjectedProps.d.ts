@@ -1,5 +1,6 @@
-import { IGraphqlResponseData } from './IGraphqlResponseData';
+import { IQueryInjectedProps } from './IQueryInjectedProps';
+import { IMutationInjectedProps } from './IMutationInjectedProps';
 
 export interface IGraphqlInjectedProps {
-  [queryKey: string]: IGraphqlResponseData | any;
+  [queryKey: string]: IQueryInjectedProps | IMutationInjectedProps | any;
 }

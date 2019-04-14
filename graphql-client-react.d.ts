@@ -4,7 +4,6 @@ import { AnyAction, Store } from 'redux';
 import { IQueryState } from './src/components/interfaces/IQueryState';
 import { DocumentNode } from 'graphql';
 import { IReduxState } from './src/components/interfaces/IReduxState';
-import { IGraphqlResponseData } from './src/components/interfaces/IGraphqlResponseData';
 
 declare interface IGraphqlOptions {
   operation: DocumentNode;
@@ -13,14 +12,18 @@ declare interface IGraphqlOptions {
   executeOnMount?: boolean;
 }
 
-declare interface IGraphqlResponseData {
+declare interface IQueryInjectedProps {
   data: any;
   fetchQuery: (newVariables?: object) => void;
   error?: any;
 }
 
+declare interface IMutationInjectedProps {
+  executeMutation: (variables: object) => Promise<any>;
+}
+
 declare interface IGraphqlInjectedProps {
-  [queryKey: string]: IGraphqlResponseData | any;
+  [queryKey: string]: IQueryInjectedProps | IMutationInjectedProps | any;
 }
 
 export interface IReduxState {
