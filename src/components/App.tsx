@@ -1,13 +1,15 @@
 import React, { Component, ReactNode } from 'react';
-
 import { graphql } from './graphql';
-import { GET_USER_QUERY } from '../graphql/testQueries';
+import { AxiosResponse } from 'axios';
 
 import XComponent from './XComponent';
-import { CachingTypes } from '../constants/cachingTypes';
+
 import { IGraphqlInjectedProps } from './interfaces/IGraphqlInjectedProps';
+
+import { GET_USER_QUERY } from '../graphql/testQueries';
 import { LOGIN_MUTATION, UPDATE_USER_MUTATION } from '../graphql/testMutations';
-import { AxiosResponse } from 'axios';
+
+import { CachingTypes } from '../constants/cachingTypes';
 
 interface IAppProps {
   randomProp: number;
@@ -50,7 +52,7 @@ class App extends Component<IAppProps & IGraphqlInjectedProps, IAppState> {
 
   public loginMutation(): void {
     this.props.loginMutation({
-      email: 'Nat_Hand43@hotmail.com',
+      email: 'vlad.luca@hotmail.com',
       password: 'F4K3rqL'
     }).then((response: AxiosResponse) => {
       localStorage.setItem('auth-token', response.data.login.token);

@@ -1,10 +1,10 @@
 import { Component, ComponentClass, ComponentType, ReactNode } from 'react';
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { AnyAction, Store } from 'redux';
+import { DocumentNode } from 'graphql';
 
 import { IQueryState } from './src/components/interfaces/IQueryState';
-import { DocumentNode } from 'graphql';
 import { IReduxState } from './src/components/interfaces/IReduxState';
-import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 declare interface IGraphqlOptions {
   operation: DocumentNode;
