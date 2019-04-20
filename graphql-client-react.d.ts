@@ -4,6 +4,7 @@ import { AnyAction, Store } from 'redux';
 import { IQueryState } from './src/components/interfaces/IQueryState';
 import { DocumentNode } from 'graphql';
 import { IReduxState } from './src/components/interfaces/IReduxState';
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 declare interface IGraphqlOptions {
   operation: DocumentNode;
@@ -49,6 +50,20 @@ declare class HttpClientConfig {
 
   public setApiUrl(apiUrl: string): HttpClientConfig;
   public getApiUrl(): string;
+
+  public setRequestInterceptor(requestInterceptor: (config: AxiosRequestConfig) => AxiosRequestConfig): HttpClientConfig;
+  public getRequestInterceptor(): (config: AxiosRequestConfig) => AxiosRequestConfig
+
+  public setRequestInterceptorErrorHandler(requestInterceptorErrorHandler: (error: AxiosError) => Promise<any>): HttpClientConfig;
+  public getRequestInterceptorErrorHandler(): (error: AxiosError) => Promise<any>;
+
+  public setResponseInterceptor(responseInterceptor: (response: AxiosResponse) => AxiosResponse): HttpClientConfig;
+  public getResponseInterceptor(): (response: AxiosResponse) => AxiosResponse;
+
+  public setResponseInterceptorErrorHandler(
+    responseInterceptorErrorHandler: (error: AxiosError) => Promise<any>
+  ): HttpClientConfig;
+  public getResponseInterceptorErrorHandler(): (error: AxiosError) => Promise<any>;
 }
 
 // reducers
