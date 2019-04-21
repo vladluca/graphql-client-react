@@ -2,7 +2,7 @@ import {
   DocumentNode,
   DefinitionNode,
   VariableDefinitionNode,
-  OperationDefinitionNode, SelectionNode
+  OperationDefinitionNode,
 } from 'graphql';
 
 import { OperationTypes } from '../constants/operationTypes';

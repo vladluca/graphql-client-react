@@ -36,7 +36,7 @@ class MutationContainer extends Component<MutationContainerProps> {
       client,
       graphqlDocument
     } = this.props;
-    console.log('aaaaaaaaaaaaaaaaaaaaaaaaa', graphqlDocument);
+
     if (client) {
       if (graphqlDocument.variables) {
         try {
@@ -67,11 +67,10 @@ class MutationContainer extends Component<MutationContainerProps> {
 
       if (operationSelectionName && response.data.data[operationSelectionName] && uniqIdentifierKey) {
         if (response.data.data[operationSelectionName][uniqIdentifierKey]) {
-          console.log(response.data.data[operationSelectionName][uniqIdentifierKey]);
-
           this.props.mergeMutationResponse(response.data.data[operationSelectionName], uniqIdentifierKey);
         }
       }
+
       return response.data;
     }).catch((error: AxiosError) => {
       if (error.response) {
