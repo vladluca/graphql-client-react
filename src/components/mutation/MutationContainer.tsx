@@ -63,11 +63,13 @@ class MutationContainer extends Component<MutationContainerProps> {
       query: this.props.graphqlDocument.body,
       variables
     }).then((response: any) => {
-      if (operationSelectionName && response.data.data[operationSelectionName]) {
-        if (response.data.data[operationSelectionName]['id']) {
-          console.log(response.data.data[operationSelectionName]['id']);
+      const { uniqIdentifierKey } = this.props;
 
-          this.props.mergeMutationResponse(response.data.data[operationSelectionName]);
+      if (operationSelectionName && response.data.data[operationSelectionName] && uniqIdentifierKey) {
+        if (response.data.data[operationSelectionName][uniqIdentifierKey]) {
+          console.log(response.data.data[operationSelectionName][uniqIdentifierKey]);
+
+          this.props.mergeMutationResponse(response.data.data[operationSelectionName], uniqIdentifierKey);
         }
       }
       return response.data;
@@ -101,7 +103,9 @@ class MutationContainer extends Component<MutationContainerProps> {
  */
 function mapDispatchToProps(dispatch: Dispatch): IMutationContainerReduxDispatchProps {
   return {
-    mergeMutationResponse: (mutationResponse: object) => dispatch(mergeMutationResponse(mutationResponse))
+    mergeMutationResponse: (mutationResponse: object, uniqIdentifierKey: string) => dispatch(
+      mergeMutationResponse(mutationResponse, uniqIdentifierKey)
+    )
   };
 }
 

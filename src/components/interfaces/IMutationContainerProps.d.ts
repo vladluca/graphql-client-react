@@ -12,6 +12,7 @@ export interface IMutationContainerProps {
   options: IGraphqlOptions;
   client: HttpClient | undefined;
   store: Store<IReduxState> | undefined;
+  uniqIdentifierKey: string | undefined;
   graphqlDocument: IGraphqlDocument;
   children(props: IGraphqlInjectedProps): ReactNode;
 }

@@ -16,7 +16,8 @@ export class GraphqlClientProvider extends Component<IGraphqlClientProviderProps
   public getContextValue(): IGraphqlClientContextValue {
     return {
       client: new HttpClient(this.props.client),
-      store: this.props.store
+      store: this.props.store,
+      uniqIdentifierKey: this.props.uniqIdentifierKey
     };
   }
 

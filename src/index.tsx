@@ -25,7 +25,7 @@ httpClientConfig.setRequestInterceptorErrorHandler((error: AxiosError) => {
 });
 
 ReactDOM.render(
-  <GraphqlClientProvider client={ httpClientConfig } store={ store }>
+  <GraphqlClientProvider client={ httpClientConfig } store={ store } uniqIdentifierKey={ 'id' }>
     <App randomProp={12}/>
   </GraphqlClientProvider>,
   document.getElementById('root') as HTMLElement

@@ -34,6 +34,7 @@ export interface IReduxState {
 export interface IGraphqlClientProviderProps {
   client: HttpClientConfig;
   store: Store<IReduxState>;
+  uniqIdentifierKey: string;
   children: ReactNode;
 }
 

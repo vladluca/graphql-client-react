@@ -1,3 +1,3 @@
 export interface IMutationContainerReduxDispatchProps {
-  mergeMutationResponse: (mutationResponse: object) => void;
+  mergeMutationResponse: (mutationResponse: object, uniqIdentifierKey: string) => void;
 }

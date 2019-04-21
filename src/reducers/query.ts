@@ -24,8 +24,10 @@ export function queryReducer(state: IQueryState = defaultState, action: AnyActio
     }
 
     case queryActions.MERGE_MUTATION_RESPONSE: {
-      const results: IQueryStateCache = replacePropertyValue('id', action.payload, { ...state.results });
-      console.log('rrrrrrrrrrrrrrr: ', results);
+      const { uniqIdentifierKey, mutationResponse } = action.payload;
+
+      const results: IQueryStateCache = replacePropertyValue(uniqIdentifierKey, mutationResponse, { ...state.results });
+
       return {
         ...state,
         results

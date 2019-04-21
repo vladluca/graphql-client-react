@@ -10,9 +10,12 @@ export function setQueryResult(queryData: IQueryResponse): AnyAction {
   };
 }
 
-export function mergeMutationResponse(mutationResponse: object): AnyAction {
+export function mergeMutationResponse(mutationResponse: object, uniqIdentifierKey: string): AnyAction {
   return {
     type: queryActions.MERGE_MUTATION_RESPONSE,
-    payload: mutationResponse
+    payload: {
+      mutationResponse,
+      uniqIdentifierKey
+    }
   }
 }
