@@ -7,6 +7,16 @@ export const UPDATE_USER_MUTATION: DocumentNode = gql`
             id
             firstName
             lastName
+            email
+            avatar
+        }
+    }
+`;
+
+export const LOGIN_MUTATION: DocumentNode = gql`
+    mutation loginMutation($email: String!, $password: String!) {
+        login(email: $email, password: $password) {
+            token
         }
     }
 `;
