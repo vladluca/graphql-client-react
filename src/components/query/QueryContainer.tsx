@@ -211,27 +211,13 @@ class QueryContainer extends Component<QueryContainerProps, IQueryContainerState
     return graphqlDocument.name + (variables ? JSON.stringify(variables) : '');
   }
 
-  public replacePropertyValue(prevVal: any, newVal: any, object: any) {
-    const newObject = clone(object);
-
-    each(object, (val, key) => {
-      console.log(val, key);
-      if (typeof(val) === 'object') {
-        newObject[key] = this.replacePropertyValue(prevVal, newVal, val);
-      }
-    });
-
-    return newObject;
-  }
-
   render(): ReactNode {
     const { noCacheQueryResult } = this.state;
     const {
       graphqlDocument,
       options: {
         variables,
-        cachingType,
-        executeOnMount
+        cachingType
       },
       queryResults
     } = this.props;
@@ -260,9 +246,6 @@ class QueryContainer extends Component<QueryContainerProps, IQueryContainerState
       queryResponse[graphqlDocument.name].fetchQuery = this.fetchQuery;
     }
 
-    console.log('aaaaaa', this.replacePropertyValue(1,3, queryResults));
-
-    console.log('asd');
     return this.props.children(queryResponse);
   }
 }
