@@ -75,7 +75,7 @@ export function gqlParser(document: DocumentNode): IGraphqlDocument {
     );
   }
 
-  let operationSelectionName: string | undefined = undefined;
+  let operationSelectionName: string | undefined;
   const selections: any = definition.selectionSet.selections[0];
   if (selections.name) {
     operationSelectionName = selections.name.value;

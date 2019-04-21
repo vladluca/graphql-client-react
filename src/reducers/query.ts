@@ -31,7 +31,7 @@ export function queryReducer(state: IQueryState = defaultState, action: AnyActio
       return {
         ...state,
         results
-      }
+      };
     }
 
     default: {

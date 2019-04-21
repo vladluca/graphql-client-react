@@ -6,7 +6,7 @@ import XComponent from './XComponent';
 
 import { IGraphqlInjectedProps } from './interfaces/IGraphqlInjectedProps';
 
-import { GET_USER_QUERY } from '../graphql/testQueries';
+import { ALL_USERS_QUERY, GET_USER_QUERY } from '../graphql/testQueries';
 import { LOGIN_MUTATION, UPDATE_USER_MUTATION } from '../graphql/testMutations';
 
 import { CachingTypes } from '../constants/cachingTypes';
@@ -90,6 +90,8 @@ class App extends Component<IAppProps & IGraphqlInjectedProps, IAppState> {
 }
 
 export default graphql<IAppProps>({
+  operation: ALL_USERS_QUERY
+})(graphql<IAppProps>({
   operation: LOGIN_MUTATION
 })(graphql<IAppProps>({
   operation: UPDATE_USER_MUTATION
@@ -98,4 +100,4 @@ export default graphql<IAppProps>({
   variables: {
     id: 'cjtmt2cag0025lw10howm9wus'
   }
-})(App)));
+})(App))));

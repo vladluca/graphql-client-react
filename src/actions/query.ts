@@ -17,5 +17,5 @@ export function mergeMutationResponse(mutationResponse: object, uniqIdentifierKe
       mutationResponse,
       uniqIdentifierKey
     }
-  }
+  };
 }
