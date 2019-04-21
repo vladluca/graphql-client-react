@@ -24,6 +24,7 @@ export function mutation<TProps>(options: IGraphqlOptions, graphqlDocument: IGra
               <MutationContainer
                 options={ options }
                 client={ value ? value.client : undefined }
+                store={ value ? value.store : undefined }
                 graphqlDocument={ graphqlDocument }
               >
                 {(mutationResultProps: IGraphqlInjectedProps) => (

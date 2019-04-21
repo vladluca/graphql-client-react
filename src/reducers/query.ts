@@ -22,6 +22,12 @@ export function queryReducer(state: IQueryState = defaultState, action: AnyActio
       };
     }
 
+    case queryActions.MERGE_MUTATION_RESPONSE: {
+      return {
+        ...state
+      }
+    }
+
     default: {
       return state;
     }

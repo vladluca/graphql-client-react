@@ -1,11 +1,18 @@
 import React, { Component, ReactNode } from 'react';
+import { connect } from 'react-redux';
+import { AxiosError } from 'axios';
+import { Dispatch } from 'redux';
 
 import { IMutationContainerProps } from '../interfaces/IMutationContainerProps';
+import { IReduxState } from '../interfaces/IReduxState';
+import { IMutationContainerReduxDispatchProps } from '../interfaces/IMutationContainerReduxDispatchProps';
+
+import { mergeMutationResponse } from '../../actions/query';
+
 import { variablesChecker } from '../../utils/variablesChecker';
 import HttpClient from '../../HttpClient/HttpClient';
-import { AxiosError } from 'axios';
 
-type MutationContainerProps = IMutationContainerProps;
+type MutationContainerProps = IMutationContainerProps & IMutationContainerReduxDispatchProps;
 
 /**
  * MutationContainer
@@ -29,7 +36,7 @@ class MutationContainer extends Component<MutationContainerProps> {
       client,
       graphqlDocument
     } = this.props;
-
+    console.log('aaaaaaaaaaaaaaaaaaaaaaaaa', graphqlDocument);
     if (client) {
       if (graphqlDocument.variables) {
         try {
@@ -39,7 +46,7 @@ class MutationContainer extends Component<MutationContainerProps> {
         }
       }
 
-      return this.fetchData(client, variables);
+      return this.fetchData(client, graphqlDocument.operationSelectionName, variables);
 
     } else {
       throw new Error('No graphql client on context!');
@@ -48,13 +55,21 @@ class MutationContainer extends Component<MutationContainerProps> {
 
   /**
    * @param client
+   * @param operationSelectionName
    * @param variables
    */
-  public fetchData(client: HttpClient, variables?: object): Promise<any> {
+  public fetchData(client: HttpClient, operationSelectionName: string | undefined, variables?: object): Promise<any> {
     return client.post({
       query: this.props.graphqlDocument.body,
       variables
     }).then((response: any) => {
+      if (operationSelectionName && response.data.data[operationSelectionName]) {
+        if (response.data.data[operationSelectionName]['id']) {
+          console.log(response.data.data[operationSelectionName]['id']);
+
+          this.props.mergeMutationResponse(response.data.data[operationSelectionName]);
+        }
+      }
       return response.data;
     }).catch((error: AxiosError) => {
       if (error.response) {
@@ -81,4 +96,16 @@ class MutationContainer extends Component<MutationContainerProps> {
   }
 }
 
-export default MutationContainer;
+/**
+ * @param dispatch
+ */
+function mapDispatchToProps(dispatch: Dispatch): IMutationContainerReduxDispatchProps {
+  return {
+    mergeMutationResponse: (mutationResponse: object) => dispatch(mergeMutationResponse(mutationResponse))
+  };
+}
+
+export default connect<{}, IMutationContainerReduxDispatchProps, IMutationContainerProps, IReduxState>(
+  undefined,
+  mapDispatchToProps
+)(MutationContainer);
