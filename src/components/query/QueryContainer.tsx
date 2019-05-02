@@ -14,6 +14,8 @@ import { AxiosError } from 'axios';
 import HttpClient from '../../HttpClient/HttpClient';
 import { CachingTypes } from '../../constants/cachingTypes';
 import { cachingTypeChecker } from '../../utils/cachingTypeChecker';
+import clone from 'lodash/clone';
+import each from 'lodash/each';
 
 type QueryContainerProps = IQueryContainerProps & IQueryContainerReduxStateProps & IQueryContainerReduxDispatchProps;
 
@@ -215,8 +217,7 @@ class QueryContainer extends Component<QueryContainerProps, IQueryContainerState
       graphqlDocument,
       options: {
         variables,
-        cachingType,
-        executeOnMount
+        cachingType
       },
       queryResults
     } = this.props;
@@ -237,7 +238,7 @@ class QueryContainer extends Component<QueryContainerProps, IQueryContainerState
         queryResponse[graphqlDocument.name] = noCacheQueryResult;
         queryResponse[graphqlDocument.name].fetchQuery = this.fetchQuery;
       } else {
-        queryResponse[graphqlDocument.name] = queryResults[queryKey] ? queryResults[queryKey] : { data: undefined };
+        queryResponse[graphqlDocument.name] = queryResults[queryKey] ? { ...queryResults[queryKey] } : { data: undefined };
         queryResponse[graphqlDocument.name].fetchQuery = this.fetchQuery;
       }
     } else {
@@ -245,9 +246,6 @@ class QueryContainer extends Component<QueryContainerProps, IQueryContainerState
       queryResponse[graphqlDocument.name].fetchQuery = this.fetchQuery;
     }
 
-    console.log(queryResults);
-
-    console.log('asd');
     return this.props.children(queryResponse);
   }
 }

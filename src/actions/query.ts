@@ -9,3 +9,13 @@ export function setQueryResult(queryData: IQueryResponse): AnyAction {
     payload: queryData
   };
 }
+
+export function mergeMutationResponse(mutationResponse: object, uniqIdentifierKey: string): AnyAction {
+  return {
+    type: queryActions.MERGE_MUTATION_RESPONSE,
+    payload: {
+      mutationResponse,
+      uniqIdentifierKey
+    }
+  };
+}
