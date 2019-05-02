@@ -63,6 +63,9 @@ class App extends Component<IAppProps & IGraphqlInjectedProps, IAppState> {
     this.props.updateUserMutation({
       id: 'cjtmt2cag0025lw10howm9wus',
       firstName: 'Vlad'
+    }, {
+      firstName: 'Vladimir',
+      lastName: 'Lucas'
     }).then((response: any) => {
       console.log(response);
     });
