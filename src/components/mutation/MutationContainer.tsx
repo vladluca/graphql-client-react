@@ -2,14 +2,17 @@ import React, { Component, ReactNode } from 'react';
 import { connect } from 'react-redux';
 import { AxiosError } from 'axios';
 import { Dispatch } from 'redux';
+import uuidv4 from 'uuid/v4';
 
 import { IMutationContainerProps } from '../interfaces/IMutationContainerProps';
 import { IReduxState } from '../interfaces/IReduxState';
 import { IMutationContainerReduxDispatchProps } from '../interfaces/IMutationContainerReduxDispatchProps';
 
-import { mergeMutationResponse } from '../../actions/query';
+import { mergeMutationResponse, removeBackupOptimisticResponseData, rollbackOptimisticResponse } from '../../actions/query';
 
 import { variablesChecker } from '../../utils/variablesChecker';
+import { optimisticResponseFlag } from '../../constants/utils';
+
 import HttpClient from '../../HttpClient/HttpClient';
 
 type MutationContainerProps = IMutationContainerProps & IMutationContainerReduxDispatchProps;
@@ -30,11 +33,13 @@ class MutationContainer extends Component<MutationContainerProps> {
 
   /**
    * @param variables
+   * @param optimisticResponse
    */
-  public executeMutation(variables: object): Promise<any> {
+  public executeMutation(variables: any, optimisticResponse?: any): Promise<any> {
     const {
       client,
-      graphqlDocument
+      graphqlDocument,
+      uniqIdentifierKey
     } = this.props;
 
     if (client) {
@@ -46,7 +51,16 @@ class MutationContainer extends Component<MutationContainerProps> {
         }
       }
 
-      return this.fetchData(client, graphqlDocument.operationSelectionName, variables);
+      const uuid: string = uuidv4();
+
+      if (optimisticResponse && uniqIdentifierKey && variables[uniqIdentifierKey]) {
+        optimisticResponse[uniqIdentifierKey] = variables[uniqIdentifierKey];
+        optimisticResponse[optimisticResponseFlag] = true;
+
+        this.props.mergeMutationResponse(optimisticResponse, uniqIdentifierKey, uuid);
+      }
+
+      return this.fetchData(client, graphqlDocument.operationSelectionName, uuid, variables);
 
     } else {
       throw new Error('No graphql client on context!');
@@ -56,9 +70,15 @@ class MutationContainer extends Component<MutationContainerProps> {
   /**
    * @param client
    * @param operationSelectionName
+   * @param uuid
    * @param variables
    */
-  public fetchData(client: HttpClient, operationSelectionName: string | undefined, variables?: object): Promise<any> {
+  public fetchData(
+    client: HttpClient,
+    operationSelectionName: string | undefined,
+    uuid: string,
+    variables?: object
+  ): Promise<any> {
     return client.post({
       query: this.props.graphqlDocument.body,
       variables
@@ -71,8 +91,16 @@ class MutationContainer extends Component<MutationContainerProps> {
         }
       }
 
+      this.props.removeBackupOptimisticResponseData(uuid);
+
       return response.data;
     }).catch((error: AxiosError) => {
+      const { uniqIdentifierKey } = this.props;
+
+      if (uniqIdentifierKey) {
+        this.props.rollbackOptimisticResponse(uniqIdentifierKey, uuid);
+      }
+
       if (error.response) {
         return {
           data: undefined,
@@ -102,8 +130,14 @@ class MutationContainer extends Component<MutationContainerProps> {
  */
 function mapDispatchToProps(dispatch: Dispatch): IMutationContainerReduxDispatchProps {
   return {
-    mergeMutationResponse: (mutationResponse: object, uniqIdentifierKey: string) => dispatch(
-      mergeMutationResponse(mutationResponse, uniqIdentifierKey)
+    mergeMutationResponse: (mutationResponse: object, uniqIdentifierKey: string, uuid?: string) => dispatch(
+      mergeMutationResponse(mutationResponse, uniqIdentifierKey, uuid)
+    ),
+    rollbackOptimisticResponse: (uniqIdentifierKey: string, uuid: string) => dispatch(
+      rollbackOptimisticResponse(uniqIdentifierKey, uuid)
+    ),
+    removeBackupOptimisticResponseData: (uuid: string) => dispatch(
+      removeBackupOptimisticResponseData(uuid)
     )
   };
 }

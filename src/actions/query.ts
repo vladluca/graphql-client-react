@@ -10,12 +10,32 @@ export function setQueryResult(queryData: IQueryResponse): AnyAction {
   };
 }
 
-export function mergeMutationResponse(mutationResponse: object, uniqIdentifierKey: string): AnyAction {
+export function mergeMutationResponse(mutationResponse: object, uniqIdentifierKey: string, uuid?: string): AnyAction {
   return {
     type: queryActions.MERGE_MUTATION_RESPONSE,
     payload: {
       mutationResponse,
-      uniqIdentifierKey
+      uniqIdentifierKey,
+      uuid
+    }
+  };
+}
+
+export function rollbackOptimisticResponse(uniqIdentifierKey: string, uuid: string): AnyAction {
+  return {
+    type: queryActions.ROLLBACK_OPTIMISTIC_RESPONSE,
+    payload: {
+      uniqIdentifierKey,
+      uuid
+    }
+  };
+}
+
+export function removeBackupOptimisticResponseData(uuid: string): AnyAction {
+  return {
+    type: queryActions.REMOVE_BACKUP_OPTIMISTIC_RESPONSE_DATA,
+    payload: {
+      uuid
     }
   };
 }
