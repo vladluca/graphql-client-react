@@ -222,6 +222,8 @@ class QueryContainer extends Component<QueryContainerProps, IQueryContainerState
       queryResults
     } = this.props;
 
+    console.log(queryResults);
+
     const queryKey: string = this.getQueryKey(variables);
     const queryResponse: any = {};
 

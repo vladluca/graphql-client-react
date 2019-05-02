@@ -24,9 +24,48 @@ export function queryReducer(state: IQueryState = defaultState, action: AnyActio
     }
 
     case queryActions.MERGE_MUTATION_RESPONSE: {
-      const { uniqIdentifierKey, mutationResponse } = action.payload;
+      const { uniqIdentifierKey, mutationResponse, uuid } = action.payload;
+      const backupData: any[] = [];
 
-      const results: IQueryStateCache = replacePropertyValue(uniqIdentifierKey, mutationResponse, { ...state.results });
+      const results: IQueryStateCache = replacePropertyValue(
+        uniqIdentifierKey,
+        mutationResponse,
+        { ...state.results },
+        uuid ? backupData : undefined
+        );
+
+      if (uuid) {
+        results[uuid] = backupData;
+      }
+
+      return {
+        ...state,
+        results
+      };
+    }
+
+    case queryActions.ROLLBACK_OPTIMISTIC_RESPONSE: {
+      const { uuid, uniqIdentifierKey } = action.payload;
+
+      const results: IQueryStateCache = replacePropertyValue(
+        uniqIdentifierKey,
+        [ ...state.results[uuid] ],
+        { ...state.results }
+      );
+
+      delete results[uuid];
+
+      return {
+        ...state,
+        results
+      };
+    }
+
+    case queryActions.REMOVE_BACKUP_OPTIMISTIC_RESPONSE_DATA: {
+      const { uuid } = action.payload;
+      const results: IQueryStateCache = { ...state.results };
+
+      delete results[uuid];
 
       return {
         ...state,
