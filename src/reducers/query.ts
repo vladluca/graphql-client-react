@@ -3,6 +3,7 @@ import { AnyAction } from 'redux';
 
 import { IQueryState } from '../components/interfaces/IQueryState';
 import { IQueryStateCache } from '../components/interfaces/IQueryStateCache';
+import { replacePropertyValue } from '../utils/replacePropertyValue';
 
 const defaultState: IQueryState = {
   results: {}
@@ -15,6 +16,17 @@ export function queryReducer(state: IQueryState = defaultState, action: AnyActio
       const results: IQueryStateCache = { ...state.results };
 
       results[queryKey] = result;
+
+      return {
+        ...state,
+        results
+      };
+    }
+
+    case queryActions.MERGE_MUTATION_RESPONSE: {
+      const { uniqIdentifierKey, mutationResponse } = action.payload;
+
+      const results: IQueryStateCache = replacePropertyValue(uniqIdentifierKey, mutationResponse, { ...state.results });
 
       return {
         ...state,

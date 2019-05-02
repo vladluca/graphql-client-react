@@ -75,9 +75,15 @@ export function gqlParser(document: DocumentNode): IGraphqlDocument {
     );
   }
 
+  let operationSelectionName: string | undefined;
+  const selections: any = definition.selectionSet.selections[0];
+  if (selections.name) {
+    operationSelectionName = selections.name.value;
+  }
+
   const parsedVariables: ReadonlyArray<IOperationVariables> = variablesParser(variables);
 
-  const payload: IGraphqlDocument = { name, type, variables: parsedVariables, body };
+  const payload: IGraphqlDocument = { name, operationSelectionName ,type, variables: parsedVariables, body };
   cache.set(document, payload);
 
   return payload;
