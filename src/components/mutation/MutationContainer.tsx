@@ -85,6 +85,10 @@ class MutationContainer extends Component<MutationContainerProps> {
     }).then((response: any) => {
       const { uniqIdentifierKey } = this.props;
 
+      if (response.errors) {
+        throw new Error();
+      }
+
       if (operationSelectionName && response.data.data[operationSelectionName] && uniqIdentifierKey) {
         if (response.data.data[operationSelectionName][uniqIdentifierKey]) {
           this.props.mergeMutationResponse(response.data.data[operationSelectionName], uniqIdentifierKey);
