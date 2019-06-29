@@ -85,7 +85,7 @@ class MutationContainer extends Component<MutationContainerProps> {
     }).then((response: any) => {
       const { uniqIdentifierKey } = this.props;
 
-      if (response.errors) {
+      if (response.data.errors) {
         throw new Error();
       }
 
